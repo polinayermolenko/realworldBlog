@@ -10,8 +10,8 @@ export default class ArticlesService {
     return body;
   }
 
-  async getArticles() {
-    const res = await this.getResponse(`https://conduit.productionready.io/api/articles`);
+  async getArticles(pages = 1) {
+    const res = await this.getResponse(`https://conduit.productionready.io/api/articles?offset=${pages * 20 - 20}`);
     return res;
   }
 }

@@ -14,4 +14,9 @@ export default class ArticlesService {
     const res = await this.getResponse(`https://conduit.productionready.io/api/articles?offset=${pages * 20 - 20}`);
     return res;
   }
+
+  async getArticle(slug) {
+    const res = await this.getResponse(`http://conduit.productionready.io/api/articles/${slug}`);
+    return res;
+  }
 }

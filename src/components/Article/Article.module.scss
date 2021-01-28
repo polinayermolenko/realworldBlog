@@ -54,10 +54,19 @@
   color: #1890ff;
 }
 
+.Article__Link:hover {
+  opacity: 0.7;
+}
+
+.Article__Link:active,
+.Article__Link:focus {
+  color: #52C41A;
+}
+
 .Article__Avatar {
   width: 46px;
   height: 46px;
-  border-radius: 50%; 
+  border-radius: 50%;
 }
 
 .Article__Content {

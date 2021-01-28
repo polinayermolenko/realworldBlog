@@ -6,7 +6,7 @@ import classes from './SignUp.module.scss';
 const SignUp = () => (
   <div className={classes.SignUp}>
     <form action="">
-      <h1 className={classes.SignUp__Title}>Sign Up</h1>
+      <h1 className={classes.SignUp__Title}>Create new account</h1>
       <label htmlFor="username">Username</label>
       <Input className={classes.SignUp__Input} id="username" placeholder="Username" />
       <label htmlFor="password">Password</label>

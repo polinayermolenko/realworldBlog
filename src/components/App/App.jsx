@@ -1,8 +1,11 @@
 import React from 'react';
 import { BrowserRouter as Router, Route } from 'react-router-dom';
 import ArticlesListContainer from '../../containers/ArticlesListContainer/ArticlesListContainer';
-import ArticlePage from '../../containers/ArticlePage/ArticlePage';
 import Header from '../Header/Header';
+import ArticlePage from '../../containers/ArticlePage/ArticlePage';
+import SignIn from '../SignIn/SignIn';
+import SignUp from '../SignUp/SignUp';
+
 import classes from './App.module.scss';
 import 'antd/dist/antd.css';
 
@@ -21,6 +24,8 @@ const App = () => (
           }}
           exact
         />
+        <Route path="/sign-in" component={SignIn} exact />
+        <Route path="/sign-up" component={SignUp} exact />
       </main>
     </div>
   </Router>

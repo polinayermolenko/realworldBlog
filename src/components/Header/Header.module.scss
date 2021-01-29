@@ -19,9 +19,9 @@
 
 .Header__LoggedOut,
 .Header__LoggedIn {
- display: flex;
- align-items: baseline;
- margin-left: auto;
+  display: flex;
+  align-items: baseline;
+  margin-left: auto;
 }
 
 .Header__LoggedOut {
@@ -50,8 +50,8 @@
 
 .Header__CreateArticle:active,
 .Header__CreateArticle:hover {
-  color: #52C41A;
-  border: 1px solid #52C41A;
+  color: #52c41a;
+  border: 1px solid #52c41a;
 }
 
 .Header__Avatar {
@@ -75,7 +75,7 @@
 .Header__LogOut:hover,
 .Header__Username:active,
 .Header__Username:hover {
-  color: #52C41A;
+  color: #52c41a;
 }
 
 .Header__SignIn {

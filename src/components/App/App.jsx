@@ -5,6 +5,7 @@ import Header from '../Header/Header';
 import ArticlePage from '../../containers/ArticlePage/ArticlePage';
 import SignIn from '../SignIn/SignIn';
 import SignUp from '../SignUp/SignUp';
+import EditProfile from '../EditProfile/EditProfile';
 
 import classes from './App.module.scss';
 import 'antd/dist/antd.css';
@@ -26,6 +27,7 @@ const App = () => (
         />
         <Route path="/sign-in" component={SignIn} exact />
         <Route path="/sign-up" component={SignUp} exact />
+        <Route path="/profile" component={EditProfile} exact />
       </main>
     </div>
   </Router>

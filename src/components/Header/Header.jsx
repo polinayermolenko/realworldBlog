@@ -5,7 +5,7 @@ import LoggedOutUser from '../LoggedOutUser/LoggedOutUser';
 import classes from './Header.module.scss';
 
 const Header = () => {
-  const loggedIn = true;
+  const loggedIn = false;
   return (
     <header className={classes.Header}>
       <h1 className={classes.Header__Title}>

@@ -2,8 +2,9 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
 import { Button } from 'antd';
-import classes from './SignUp.module.scss';
+import isEmail from 'validator/es/lib/isEmail';
 import FormInput from '../FormInput/FormInput';
+import classes from './SignUp.module.scss';
 
 const SignUp = () => {
   const { register, handleSubmit, watch, errors } = useForm({
@@ -14,7 +15,6 @@ const SignUp = () => {
     console.log(data);
   };
 
-  const emailRegExp = /^[\w-.]+@([\w-]+\.)+[\w-]{2,4}$/;
   const passwordValue = watch('password', '');
 
   const usernameSettingsValidation = register({
@@ -25,10 +25,7 @@ const SignUp = () => {
 
   const emailSettingsValidation = register({
     required: 'Email is required',
-    pattern: {
-      value: emailRegExp,
-      message: 'Invalid email format',
-    },
+    validate: () => isEmail(watch('email')) || 'Invalid email format',
   });
 
   const passwordSettingsValidation = register({
@@ -48,7 +45,7 @@ const SignUp = () => {
 
   return (
     <div className={classes.SignUp}>
-      <form action="" onSubmit={handleSubmit(onSubmit)}>
+      <form onSubmit={handleSubmit(onSubmit)}>
         <h1 className={classes.SignUp__Title}>Create new account</h1>
 
         <FormInput

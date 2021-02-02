@@ -1,15 +1,16 @@
 import React, { useEffect, useState } from 'react';
-import PropTypes from 'prop-types';
 import { Alert, Spin } from 'antd';
+import { useParams } from 'react-router-dom';
 import ArticlesService from '../../services/ArticlesService';
 import Article from '../../components/Article/Article';
 import classes from './ArticlePage.module.scss';
 
-const ArticlePage = ({ slug }) => {
+const ArticlePage = () => {
   const articlesService = new ArticlesService();
   const [item, setArticle] = useState(null);
   const [hasError, setError] = useState(false);
   const [isLoading, setLoading] = useState(true);
+  const { slug } = useParams();
 
   useEffect(() => {
     articlesService
@@ -36,7 +37,3 @@ const ArticlePage = ({ slug }) => {
 };
 
 export default ArticlePage;
-
-ArticlePage.propTypes = {
-  slug: PropTypes.string.isRequired,
-};

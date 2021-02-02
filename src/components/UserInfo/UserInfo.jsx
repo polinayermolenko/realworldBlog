@@ -1,13 +1,32 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
+import { connect } from 'react-redux';
+import PropTypes from 'prop-types';
 import classes from '../Header/Header.module.scss';
 import DefaultUserAvatar from '../../img/DefaultUserAvatar.svg';
 
-const UserInfo = () => (
-  <Link className={classes.Header__UserInfo} to="/profile">
-    <span className={classes.Header__Username}>John Doe</span>
-    <img className={classes.Header__Avatar} src={DefaultUserAvatar} width="46" height="46" alt="Avatar" />
-  </Link>
-);
+const UserInfo = ({ user }) => {
+  const { username, image } = user;
+  return (
+    <Link className={classes.Header__UserInfo} to="/profile">
+      <span className={classes.Header__Username}>{username}</span>
+      <img className={classes.Header__Avatar} src={image ?? DefaultUserAvatar} width="46" height="46" alt="Avatar" />
+    </Link>
+  );
+};
 
-export default UserInfo;
+const mapStateToProps = ({
+  userData: {
+    user: { username, image },
+  },
+}) => ({ username, image });
+
+export default connect(mapStateToProps)(UserInfo);
+
+UserInfo.defaultProps = {
+  user: {},
+};
+
+UserInfo.propTypes = {
+  user: PropTypes.instanceOf(Object),
+};

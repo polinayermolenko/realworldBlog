@@ -6,7 +6,6 @@ export default class ArticlesService {
       throw new Error(`Could not fetch ${url}, received ${res.status}`);
     }
     const body = await res.json();
-
     return body;
   }
 
@@ -41,5 +40,18 @@ export default class ArticlesService {
   async logInUser(data) {
     const res = await this.postResponse(`https://conduit.productionready.io/api/users/login`, data);
     return res;
+  }
+
+  async getCurrentUser() {
+    const res = await fetch('https://conduit.productionready.io/api/user', {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json;charset=utf-8',
+        Authorization: `Token ${localStorage.getItem('token')}`,
+      },
+    });
+
+    const body = await res.json();
+    return body;
   }
 }

@@ -1,13 +1,26 @@
-import React from 'react';
+import React, { useEffect, useMemo } from 'react';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import LoggedInUser from '../LoggedInUser/LoggedInUser';
 import LoggedOutUser from '../LoggedOutUser/LoggedOutUser';
+import ArticlesService from '../../services/ArticlesService';
+import { setUser } from '../../actions/actions';
 import classes from './Header.module.scss';
 
-const Header = ({ user = {} }) => {
-  const { token } = user;
+const Header = (props) => {
+  const articlesService = useMemo(() => new ArticlesService(), []);
+  useEffect(() => {
+    if (localStorage.getItem('token')) {
+      articlesService
+        .getCurrentUser()
+        .then((body) => {
+          props.setUser(body.user);
+        })
+        .catch((err) => console.log(err));
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   return (
     <header className={classes.Header}>
@@ -16,19 +29,19 @@ const Header = ({ user = {} }) => {
           Realword Blog
         </Link>
       </h1>
-      {token ? <LoggedInUser /> : <LoggedOutUser />}
+      {localStorage.getItem('token') ? <LoggedInUser /> : <LoggedOutUser />}
     </header>
   );
 };
-
 const mapStateToProps = ({ userData: { user } }) => ({ user });
+const mapDispatchToProps = { setUser };
+export default connect(mapStateToProps, mapDispatchToProps)(Header);
 
-export default connect(mapStateToProps)(Header);
-
-Header.defaultProps = {
-  user: {},
-};
+// Header.defaultProps = {
+//   user: {},
+// };
 
 Header.propTypes = {
-  user: PropTypes.instanceOf(Object),
+  // user: PropTypes.instanceOf(Object),
+  setUser: PropTypes.func.isRequired,
 };

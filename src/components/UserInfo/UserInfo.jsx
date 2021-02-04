@@ -5,8 +5,11 @@ import PropTypes from 'prop-types';
 import classes from '../Header/Header.module.scss';
 import DefaultUserAvatar from '../../img/DefaultUserAvatar.svg';
 
-const UserInfo = ({ user }) => {
-  const { username, image } = user;
+const UserInfo = (props) => {
+  console.log(props);
+  const {
+    user: { username, image },
+  } = props;
   return (
     <Link className={classes.Header__UserInfo} to="/profile">
       <span className={classes.Header__Username}>{username}</span>
@@ -15,11 +18,7 @@ const UserInfo = ({ user }) => {
   );
 };
 
-const mapStateToProps = ({
-  userData: {
-    user: { username, image },
-  },
-}) => ({ username, image });
+const mapStateToProps = ({ userData: { user } }) => ({ user });
 
 export default connect(mapStateToProps)(UserInfo);
 

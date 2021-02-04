@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import { useForm } from 'react-hook-form';
-import { Link, useHistory } from 'react-router-dom';
+import { Link, Redirect } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { Button } from 'antd';
 import isEmail from 'validator/es/lib/isEmail';
@@ -15,7 +15,7 @@ const SignIn = (props) => {
   const [serverErrors, setServerErrors] = useState({
     'email or password': null,
   });
-  const history = useHistory();
+
   const articlesService = new ArticlesService();
   const { register, handleSubmit, watch, errors } = useForm({
     mode: 'onChange',
@@ -42,7 +42,7 @@ const SignIn = (props) => {
   };
 
   if (localStorage.getItem('token')) {
-    history.push('/');
+    return <Redirect to="/" />;
   }
 
   const emailSettingsValidation = register({

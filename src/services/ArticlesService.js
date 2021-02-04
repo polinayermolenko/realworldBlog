@@ -19,10 +19,6 @@ export default class ArticlesService {
       body: JSON.stringify(data),
     });
 
-    if (!res.ok) {
-      throw new Error(`Could not find the data`);
-    }
-
     const body = await res.json();
     return body;
   }

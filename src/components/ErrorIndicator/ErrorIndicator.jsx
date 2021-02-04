@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import classes from './ErrorIndicator.module.scss';
 
 const ErrorIndicator = ({ errorMessage }) => (
-  <p style={{ margin: 0, color: '#f5222d' }} className={classes.Error}>
+  <p style={{ color: '#f5222d' }} className={classes.Error}>
     {errorMessage}
   </p>
 );

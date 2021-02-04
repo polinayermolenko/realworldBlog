@@ -2,6 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
 import ReactMarkdown from 'react-markdown';
+import { format, parseISO } from 'date-fns';
 import classes from './Article.module.scss';
 
 const Article = ({ article, isFull = false }) => {
@@ -16,6 +17,9 @@ const Article = ({ article, isFull = false }) => {
       author: { username, image },
       favouritesCount,
     } = article;
+
+    const date = format(new Date(parseISO(createdAt)), 'MMMM d, yyyy');
+
     return (
       <article className={classes.Article}>
         <header className={classes.Article__Header}>
@@ -33,7 +37,7 @@ const Article = ({ article, isFull = false }) => {
           <div className={classes.Article__Right}>
             <div className={classes.Article__UserInfo}>
               <span>{username}</span>
-              <span>{createdAt}</span>
+              <span>{date}</span>
             </div>
             <img className={classes.Article__Avatar} src={image} width="46" height="46" alt="Avatar" />
           </div>

@@ -1,19 +1,52 @@
-import React from 'react';
-import { Link } from 'react-router-dom';
+import React, { useState } from 'react';
+import PropTypes from 'prop-types';
+import { connect } from 'react-redux';
+import { Link, useHistory } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
 import { Button } from 'antd';
 import isEmail from 'validator/es/lib/isEmail';
 import FormInput from '../FormInput/FormInput';
+import ArticlesService from '../../services/ArticlesService';
+import { setUser } from '../../actions/actions';
 import classes from './SignUp.module.scss';
 
-const SignUp = () => {
+const SignUp = (props) => {
+  const history = useHistory();
+  const articlesService = new ArticlesService();
+  const [serverErrors, setServerErrors] = useState({
+    username: null,
+    email: null,
+    password: null,
+  });
   const { register, handleSubmit, watch, errors } = useForm({
     mode: 'onChange',
   });
 
-  const onSubmit = (data) => {
-    console.log(data);
+  const onSubmit = ({ username, email, password }) => {
+    const requestBody = {
+      user: {
+        username,
+        email,
+        password,
+      },
+    };
+
+    articlesService
+      .registerUser(requestBody)
+      .then((body) => {
+        if (body.errors) {
+          setServerErrors(body.errors);
+          return;
+        }
+        props.setUser(body.user);
+        localStorage.setItem('token', body.user.token);
+      })
+      .catch((err) => console.log(err));
   };
+
+  if (localStorage.getItem('token')) {
+    history.push('/');
+  }
 
   const passwordValue = watch('password', '');
 
@@ -55,6 +88,7 @@ const SignUp = () => {
           label="Username"
           type="text"
           name="username"
+          serverErrors={serverErrors}
         />
 
         <FormInput
@@ -64,6 +98,7 @@ const SignUp = () => {
           label="Email Address"
           type="email"
           name="email"
+          serverErrors={serverErrors}
         />
 
         <FormInput
@@ -73,6 +108,7 @@ const SignUp = () => {
           label="Password"
           type="password"
           name="password"
+          serverErrors={serverErrors}
         />
 
         <FormInput
@@ -82,6 +118,7 @@ const SignUp = () => {
           label="Repeat Password"
           type="password"
           name="passwordRepeat"
+          serverErrors={serverErrors}
         />
 
         <div className={classes.SignUp__Agreement}>
@@ -109,4 +146,11 @@ const SignUp = () => {
   );
 };
 
-export default SignUp;
+const mapStateToProps = ({ userData: { user } }) => ({ user });
+const mapDispatchToProps = { setUser };
+
+export default connect(mapStateToProps, mapDispatchToProps)(SignUp);
+
+SignUp.propTypes = {
+  setUser: PropTypes.func.isRequired,
+};

@@ -19,6 +19,7 @@ const Header = (props) => {
         })
         .catch((err) => console.log(err));
     }
+
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
@@ -37,11 +38,6 @@ const mapStateToProps = ({ userData: { user } }) => ({ user });
 const mapDispatchToProps = { setUser };
 export default connect(mapStateToProps, mapDispatchToProps)(Header);
 
-// Header.defaultProps = {
-//   user: {},
-// };
-
 Header.propTypes = {
-  // user: PropTypes.instanceOf(Object),
   setUser: PropTypes.func.isRequired,
 };

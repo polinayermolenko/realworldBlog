@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { Link, useHistory } from 'react-router-dom';
+import { Link, Redirect } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
 import { Button } from 'antd';
 import isEmail from 'validator/es/lib/isEmail';
@@ -11,7 +11,6 @@ import { setUser } from '../../actions/actions';
 import classes from './SignUp.module.scss';
 
 const SignUp = (props) => {
-  const history = useHistory();
   const articlesService = new ArticlesService();
   const [serverErrors, setServerErrors] = useState({
     username: null,
@@ -38,14 +37,14 @@ const SignUp = (props) => {
           setServerErrors(body.errors);
           return;
         }
-        props.setUser(body.user);
         localStorage.setItem('token', body.user.token);
+        props.setUser(body.user);
       })
       .catch((err) => console.log(err));
   };
 
   if (localStorage.getItem('token')) {
-    history.push('/');
+    return <Redirect to="/" />;
   }
 
   const passwordValue = watch('password', '');

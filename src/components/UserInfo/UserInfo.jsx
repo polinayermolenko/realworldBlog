@@ -6,7 +6,6 @@ import classes from '../Header/Header.module.scss';
 import DefaultUserAvatar from '../../img/DefaultUserAvatar.svg';
 
 const UserInfo = (props) => {
-  console.log(props);
   const {
     user: { username, image },
   } = props;

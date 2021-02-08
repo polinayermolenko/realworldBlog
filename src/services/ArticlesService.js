@@ -54,4 +54,17 @@ export default class ArticlesService {
     const body = await res.json();
     return body;
   }
+
+  async updateUser(data) {
+    const response = await fetch('https://conduit.productionready.io/api/user', {
+      method: 'PUT',
+      headers: {
+        'Content-Type': 'application/json;charset=utf-8',
+        Authorization: `Token ${localStorage.getItem('token')}`,
+      },
+      body: JSON.stringify(data),
+    });
+
+    return response.json();
+  }
 }

@@ -1,0 +1,25 @@
+.Tags__Title {
+    margin: 0;
+    font-size: 14px;
+}
+
+.Tags__List {
+  display: flex;
+  flex-wrap: wrap;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.Tags__Item {
+  display: flex;
+  margin-top: 10px;
+}
+
+.Tags__Tag {
+  padding: 10px;
+  margin-right: 10px;
+  box-sizing: border-box;
+  border: 1px solid #D9D9D9;
+  cursor: pointer;
+}

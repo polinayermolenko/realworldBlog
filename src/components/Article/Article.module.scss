@@ -27,15 +27,37 @@
 .Article__Right {
   position: relative;
   margin-left: auto;
+  margin-bottom: 20px;
   display: flex;
+  flex-direction: column;
   flex-wrap: wrap;
   align-content: flex-start;
   justify-content: flex-end;
 }
 
+.Article__UserInfoWrapper {
+  display: flex;
+}
+
+.Article__Username {
+  font-size: 20px;
+  color: #000000;
+}
+
 .Article__Tags {
   width: 100%;
-  // overflow-wrap: break-word;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  overflow-wrap: break-word;
+  list-style: none;
+}
+
+.Article__TagsItem {
+  padding: 2px 5px;
+  margin-right: 5px;
+  border: 1px solid rgba(0, 0, 0, 0.5);
+  border-radius: 2px;
 }
 
 .Article__Title {
@@ -67,6 +89,27 @@
   width: 46px;
   height: 46px;
   border-radius: 50%;
+}
+
+.Article__Buttons {
+  margin-top: 20px;
+}
+
+button.Article__Delete {
+  margin-right: 20px;
+  background-color: #FFFFFF;
+  color: #F5222D;
+  border-color: #F5222D;
+}
+
+button.Article__Edit {
+  background-color: #FFFFFF;
+  color: #52C41A;
+  border-color: #52C41A;
+}
+
+button.Article__Edit:hover {
+  background-color: #52C41A;
 }
 
 .Article__Content {

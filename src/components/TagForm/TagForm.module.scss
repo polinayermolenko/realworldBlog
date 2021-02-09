@@ -1,0 +1,17 @@
+.TagForm {
+  width: 450px;
+  box-sizing: border-box;
+  display: flex;
+  flex-wrap: wrap;
+  margin-top: 50px;
+}
+  
+button.TagForm__Submit {
+  display: flex;
+  align-items: center;
+  padding: 20px 25px;
+  color: #1890FF;
+  border-color: #1890FF;
+  margin-left: 10px;
+  margin-top: 23px;
+}

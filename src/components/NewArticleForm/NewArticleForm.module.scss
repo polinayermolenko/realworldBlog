@@ -1,0 +1,31 @@
+.NewArtileForm__Input {
+  padding: 10px;
+  display: block;
+  width: 100%;
+  box-sizing: border-box;
+  padding-top: 10px;
+  padding-bottom: 110px;
+  padding-left: 10px;
+  font-size: 14px;
+  line-height: 22px;
+  border: 1px solid #d9d9d9;
+  border-radius: 4px;
+  outline: none;
+}
+
+.NewArtileForm__Input:active,
+.NewArtileForm__Input:hover,
+.NewArtileForm__Input:focus {
+  outline: none;
+  box-shadow: inset 0 0 0 1px #1890ff;
+}
+
+
+button.NewArticleForm__Submit {
+  position: absolute;
+  display: flex;
+  align-items: center;
+  padding: 20px 150px;
+  bottom: 50px;
+  left: 30px;
+}

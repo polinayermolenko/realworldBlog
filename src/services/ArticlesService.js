@@ -67,4 +67,30 @@ export default class ArticlesService {
 
     return response.json();
   }
+
+  async createArticle(data) {
+    const response = await fetch('https://conduit.productionready.io/api/articles', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json;charset=utf-8',
+        Authorization: `Token ${localStorage.getItem('token')}`,
+      },
+      body: JSON.stringify(data),
+    });
+
+    return response.json();
+  }
+
+  async updateArticle(data, slug) {
+    const response = await fetch(`https://conduit.productionready.io/api/articles/${slug}`, {
+      method: 'PUT',
+      headers: {
+        'Content-Type': 'application/json;charset=utf-8',
+        Authorization: `Token ${localStorage.getItem('token')}`,
+      },
+      body: JSON.stringify(data),
+    });
+
+    return response.json();
+  }
 }

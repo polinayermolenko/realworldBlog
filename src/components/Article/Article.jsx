@@ -1,11 +1,14 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
+import { Button } from 'antd';
 import ReactMarkdown from 'react-markdown';
 import { format, parseISO } from 'date-fns';
 import classes from './Article.module.scss';
 
-const Article = ({ article, isFull = false }) => {
+const Article = ({ article, isFull = false, user = {} }) => {
+  const { username: currentUser } = user;
   if (article) {
     const {
       title,
@@ -32,34 +35,53 @@ const Article = ({ article, isFull = false }) => {
               </h2>
               <button type="button">{favouritesCount}</button>
             </div>
-            <span className={classes.Article__Tags}>{tagList}</span>
+            <ul className={classes.Article__Tags}>
+              {tagList.map((tag) => (
+                <li key={Math.random()} className={classes.Article__TagsItem}>
+                  {tag}
+                </li>
+              ))}
+            </ul>
+            <p className={classes.Article__Description}>{description}</p>
           </div>
           <div className={classes.Article__Right}>
-            <div className={classes.Article__UserInfo}>
-              <span>{username}</span>
-              <span>{date}</span>
+            <div className={classes.Article__UserInfoWrapper}>
+              <div className={classes.Article__UserInfo}>
+                <span className={classes.Article__Username}>{username}</span>
+                <span>{date}</span>
+              </div>
+              <img className={classes.Article__Avatar} src={image} width="46" height="46" alt="Avatar" />
             </div>
-            <img className={classes.Article__Avatar} src={image} width="46" height="46" alt="Avatar" />
+            {isFull && username === currentUser ? (
+              <div className={classes.Article__Buttons}>
+                <Button className={classes.Article__Delete} type="danger">
+                  Delete
+                </Button>
+                <Button className={classes.Article__Edit} type="primary">
+                  Edit
+                </Button>
+              </div>
+            ) : null}
           </div>
         </header>
-        <section className={classes.Article__Body}>
-          <p className={classes.Article__Description}>{description}</p>
-          {isFull ? <ReactMarkdown source={body} /> : null}
-        </section>
+        <section className={classes.Article__Body}>{isFull ? <ReactMarkdown source={body} /> : null}</section>
       </article>
     );
   }
   return null;
 };
 
-export default Article;
+const mapStateToProps = ({ userData: { user } }) => ({ user });
+export default connect(mapStateToProps)(Article);
 
 Article.defaultProps = {
+  user: {},
   article: {},
   isFull: false,
 };
 
 Article.propTypes = {
+  user: PropTypes.instanceOf(Object),
   article: PropTypes.instanceOf(Object),
   isFull: PropTypes.bool,
 };

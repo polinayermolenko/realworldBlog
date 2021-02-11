@@ -2,13 +2,15 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { Link, useHistory } from 'react-router-dom';
-import { Button } from 'antd';
+import { Button, Popconfirm } from 'antd';
 import ReactMarkdown from 'react-markdown';
 import { format, parseISO } from 'date-fns';
+import ArticlesService from '../../services/ArticlesService';
 import classes from './Article.module.scss';
 
 const Article = ({ article, isFull = false, user = {} }) => {
   const history = useHistory();
+  const articleService = new ArticlesService();
   const { username: currentUser } = user;
   if (article) {
     const {
@@ -23,6 +25,13 @@ const Article = ({ article, isFull = false, user = {} }) => {
     } = article;
 
     const date = format(new Date(parseISO(createdAt)), 'MMMM d, yyyy');
+
+    const onDelete = () => {
+      articleService
+        .deleteArticle(slug)
+        .then(() => history.push('/'))
+        .catch((err) => console.log(err));
+    };
 
     return (
       <article className={classes.Article}>
@@ -55,9 +64,17 @@ const Article = ({ article, isFull = false, user = {} }) => {
             </div>
             {isFull && username === currentUser ? (
               <div className={classes.Article__Buttons}>
-                <Button className={classes.Article__Delete} type="danger">
-                  Delete
-                </Button>
+                <Popconfirm
+                  placement="rightTop"
+                  title="Are you sure to delete this article?"
+                  onConfirm={onDelete}
+                  okText="Yes"
+                  cancelText="No"
+                >
+                  <Button className={classes.Article__Delete} type="danger">
+                    Delete
+                  </Button>
+                </Popconfirm>
                 <Button
                   className={classes.Article__Edit}
                   type="primary"

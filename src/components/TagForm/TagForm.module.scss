@@ -16,15 +16,14 @@
   border-radius: 4px;
   margin-left: 10px;
   background-color: #ffffff;
-  padding: 8px 30px; 
+  padding: 8px 30px;
   outline: none;
 }
 
 .TagForm__Submit:hover,
-.TagForm__Submit:active, 
+.TagForm__Submit:active,
 .TagForm__Submit:focus {
   border: 1px solid darken(#1890ff, 15%);
   color: darken(#1890ff, 15%);
   border-radius: 4px;
- 
 }

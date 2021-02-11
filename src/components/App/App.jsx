@@ -7,6 +7,7 @@ import SignIn from '../SignIn/SignIn';
 import SignUp from '../SignUp/SignUp';
 import EditProfile from '../EditProfile/EditProfile';
 import NewArticle from '../NewArticle/NewArticle';
+import EditArticle from '../EditArticle/EditArticle';
 import PrivateRoute from '../PrivateRoute/PrivateRoute';
 import classes from './App.module.scss';
 import 'antd/dist/antd.css';
@@ -23,6 +24,7 @@ const App = () => (
         <Route path="/sign-up" component={SignUp} exact />
         <PrivateRoute path="/profile" component={EditProfile} exact />
         <PrivateRoute path="/new-article" component={NewArticle} exact />
+        <PrivateRoute path="/articles/:slug/edit" component={EditArticle} exact />
       </main>
     </div>
   </Router>

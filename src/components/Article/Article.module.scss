@@ -108,7 +108,9 @@ button.Article__Edit {
   border-color: #52c41a;
 }
 
-button.Article__Edit:hover {
+button.Article__Edit:hover,
+button.Article__Edit:focus,
+button.Article__Edit:active {
   background-color: #52c41a;
 }
 

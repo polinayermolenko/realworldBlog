@@ -1,13 +1,14 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { Link } from 'react-router-dom';
+import { Link, useHistory } from 'react-router-dom';
 import { Button } from 'antd';
 import ReactMarkdown from 'react-markdown';
 import { format, parseISO } from 'date-fns';
 import classes from './Article.module.scss';
 
 const Article = ({ article, isFull = false, user = {} }) => {
+  const history = useHistory();
   const { username: currentUser } = user;
   if (article) {
     const {
@@ -57,7 +58,11 @@ const Article = ({ article, isFull = false, user = {} }) => {
                 <Button className={classes.Article__Delete} type="danger">
                   Delete
                 </Button>
-                <Button className={classes.Article__Edit} type="primary">
+                <Button
+                  className={classes.Article__Edit}
+                  type="primary"
+                  onClick={() => history.push(`/articles/${slug}/edit`)}
+                >
                   Edit
                 </Button>
               </div>

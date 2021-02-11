@@ -6,8 +6,15 @@ import ErrorIndicator from '../ErrorIndicator/ErrorIndicator';
 import FormInput from '../FormInput/FormInput';
 import classes from './NewArticleForm.module.scss';
 
-const NewArticleForm = ({ onSubmitArticle }) => {
-  const { handleSubmit, errors, register } = useForm({ mode: 'onChange' });
+const NewArticleForm = ({ onSubmitArticle, article = {} }) => {
+  const { handleSubmit, errors, register } = useForm({
+    mode: 'onChange',
+    defaultValues: {
+      title: article.title,
+      description: article.description,
+      body: article.body,
+    },
+  });
   const onSubmit = (data) => {
     onSubmitArticle(data);
   };
@@ -52,7 +59,6 @@ const NewArticleForm = ({ onSubmitArticle }) => {
       </div>
 
       <Button className={classes.NewArticleForm__Submit} type="primary" htmlType="submit">
-        {' '}
         Send
       </Button>
     </form>
@@ -61,6 +67,11 @@ const NewArticleForm = ({ onSubmitArticle }) => {
 
 export default NewArticleForm;
 
+NewArticleForm.defaultProps = {
+  article: {},
+};
+
 NewArticleForm.propTypes = {
   onSubmitArticle: PropTypes.func.isRequired,
+  article: PropTypes.instanceOf(Object),
 };

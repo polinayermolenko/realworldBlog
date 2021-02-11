@@ -1,5 +1,4 @@
 import React from 'react';
-import { Button } from 'antd';
 import PropTypes from 'prop-types';
 import { useForm } from 'react-hook-form';
 import FormInput from '../FormInput/FormInput';
@@ -26,14 +25,14 @@ const TagForm = ({ onAddTag }) => {
         })}
         id="addingTag"
         error={errors.addingTag}
-        label="Tags"
+        label=""
         type="text"
         name="addingTag"
       />
 
-      <Button className={classes.TagForm__Submit} htmlType="submit">
+      <button type="submit" className={classes.TagForm__Submit}>
         Add tag
-      </Button>
+      </button>
     </form>
   );
 };

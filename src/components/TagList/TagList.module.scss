@@ -3,9 +3,26 @@
   font-size: 14px;
 }
 
+.Tags__Delete {
+  border: 1px solid #f5222d;
+  color: #f5222d;
+  font-size: 16px;
+  line-height: 24px;
+  box-sizing: border-box;
+  border-radius: 4px;
+  background-color: #ffffff;
+  padding: 8px 35px;
+  outline: none;
+}
+
+.Tags__Delete:hover,
+.Tags__Delete:active,
+.Tags__Delete:focus {
+  border: 1px solid darken(#f5222d, 15%);
+  color: darken(#f5222d, 15%);
+}
+
 .Tags__List {
-  display: flex;
-  flex-wrap: wrap;
   margin: 0;
   padding: 0;
   list-style: none;
@@ -17,9 +34,11 @@
 }
 
 .Tags__Tag {
+  width: 300px;
   padding: 10px;
   margin-right: 10px;
   box-sizing: border-box;
   border: 1px solid #d9d9d9;
+  border-radius: 4px;
   cursor: pointer;
 }

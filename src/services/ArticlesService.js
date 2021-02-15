@@ -105,4 +105,30 @@ export default class ArticlesService {
 
     return res.json();
   }
+
+  async setFavoriteArticle(slug) {
+    const res = await fetch(`https://conduit.productionready.io/api/articles/${slug}/favorite`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json;charset=utf-8',
+        Authorization: `Token ${localStorage.getItem('token')}`,
+      },
+    });
+
+    const body = await res.json();
+    return body;
+  }
+
+  async setUnfavoriteArticle(slug) {
+    const res = await fetch(`https://conduit.productionready.io/api/articles/${slug}/favorite`, {
+      method: 'DELETE',
+      headers: {
+        'Content-Type': 'application/json;charset=utf-8',
+        Authorization: `Token ${localStorage.getItem('token')}`,
+      },
+    });
+
+    const body = await res.json();
+    return body;
+  }
 }

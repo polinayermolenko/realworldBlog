@@ -1,5 +1,5 @@
 import React from 'react';
-import { BrowserRouter as Router, Route } from 'react-router-dom';
+import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 import ArticlesListContainer from '../../containers/ArticlesListContainer/ArticlesListContainer';
 import Header from '../Header/Header';
 import ArticlePage from '../../containers/ArticlePage/ArticlePage';
@@ -17,14 +17,17 @@ const App = () => (
     <div className={classes.App}>
       <Header />
       <main className={classes.Main}>
-        <Route path="/" component={ArticlesListContainer} exact />
-        <Route path="/articles" component={ArticlesListContainer} exact />
-        <Route path="/articles/:slug" component={ArticlePage} exact />
-        <Route path="/sign-in" component={SignIn} exact />
-        <Route path="/sign-up" component={SignUp} exact />
-        <PrivateRoute path="/profile" component={EditProfile} exact />
-        <PrivateRoute path="/new-article" component={NewArticle} exact />
-        <PrivateRoute path="/articles/:slug/edit" component={EditArticle} exact />
+        <Switch>
+          <Route path="/" component={ArticlesListContainer} exact />
+          <Route path="/articles" component={ArticlesListContainer} exact />
+          <Route path="/articles/:slug" component={ArticlePage} exact />
+          <Route path="/sign-in" component={SignIn} exact />
+          <Route path="/sign-up" component={SignUp} exact />
+          <PrivateRoute path="/profile" component={EditProfile} exact />
+          <PrivateRoute path="/new-article" component={NewArticle} exact />
+          <PrivateRoute path="/articles/:slug/edit" component={EditArticle} exact />
+          <Route path="/" component={ArticlesListContainer} />
+        </Switch>
       </main>
     </div>
   </Router>

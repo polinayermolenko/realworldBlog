@@ -85,6 +85,24 @@
   color: #52c41a;
 }
 
+.Article__Like {
+  font-size: 18px;
+  line-height: 22px;
+  color: rgba(0, 0, 0, 0.75);
+  align-self: center;
+}
+
+.Article__Heart {
+  margin-right: 5px;
+  align-self: center;
+  color: rgba(0, 0, 0, 0.75);
+  cursor: pointer;
+}
+
+.Article__Heart:hover {
+  color: #ff0707;
+}
+
 .Article__Avatar {
   width: 46px;
   height: 46px;

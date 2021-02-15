@@ -3,12 +3,13 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { Link, useHistory } from 'react-router-dom';
 import { Button, Popconfirm } from 'antd';
+import { HeartOutlined, HeartFilled } from '@ant-design/icons';
 import ReactMarkdown from 'react-markdown';
 import { format, parseISO } from 'date-fns';
 import ArticlesService from '../../services/ArticlesService';
 import classes from './Article.module.scss';
 
-const Article = ({ article, isFull = false, user = {} }) => {
+const Article = ({ article, isFull = false, user = {}, onLike, onDislike, isFavorite }) => {
   const history = useHistory();
   const articleService = new ArticlesService();
   const { username: currentUser } = user;
@@ -21,7 +22,7 @@ const Article = ({ article, isFull = false, user = {} }) => {
       tagList,
       description,
       author: { username, image },
-      favouritesCount,
+      favoritesCount,
     } = article;
 
     const date = format(new Date(parseISO(createdAt)), 'MMMM d, yyyy');
@@ -43,7 +44,16 @@ const Article = ({ article, isFull = false, user = {} }) => {
                   {title}
                 </Link>
               </h2>
-              <button type="button">{favouritesCount}</button>
+              {isFavorite ? (
+                <HeartFilled
+                  onClick={onDislike}
+                  className={classes.Article__Heart}
+                  style={{ fontSize: '18px', color: '#ff0707' }}
+                />
+              ) : (
+                <HeartOutlined onClick={onLike} className={classes.Article__Heart} style={{ fontSize: '18px' }} />
+              )}
+              <span className={classes.Article__Like}>{favoritesCount}</span>
             </div>
             <ul className={classes.Article__Tags}>
               {tagList.map((tag) => (
@@ -100,10 +110,16 @@ Article.defaultProps = {
   user: {},
   article: {},
   isFull: false,
+  onLike: () => {},
+  onDislike: () => {},
+  isFavorite: '',
 };
 
 Article.propTypes = {
   user: PropTypes.instanceOf(Object),
   article: PropTypes.instanceOf(Object),
   isFull: PropTypes.bool,
+  onLike: PropTypes.func,
+  onDislike: PropTypes.func,
+  isFavorite: PropTypes.string,
 };

@@ -2,8 +2,8 @@ import React, { useEffect, useState } from 'react';
 import { Alert, Spin } from 'antd';
 import { useParams } from 'react-router-dom';
 import ArticlesService from '../../services/ArticlesService';
-import Article from '../../components/Article/Article';
 import classes from './ArticlePage.module.scss';
+import ArticleWrapper from '../ArticleWrapper/ArticleWrapper';
 
 const ArticlePage = () => {
   const articlesService = new ArticlesService();
@@ -33,7 +33,12 @@ const ArticlePage = () => {
   if (isLoading) {
     return <Spin className={classes.Spin} size="large" tip="Loading..." />;
   }
-  return <Article article={item} isFull />;
+
+  if (item) {
+    return <ArticleWrapper article={item} isFull />;
+  }
+
+  return null;
 };
 
 export default ArticlePage;

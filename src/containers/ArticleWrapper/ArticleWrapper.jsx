@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { useHistory } from 'react-router-dom';
 import PropTypes, { bool } from 'prop-types';
 import Article from '../../components/Article/Article';
 import ArticlesService from '../../services/ArticlesService';
@@ -6,18 +7,23 @@ import ArticlesService from '../../services/ArticlesService';
 const ArticleWrapper = ({ article: receivedArticle, isFull }) => {
   const articlesService = new ArticlesService();
   const { slug } = receivedArticle;
+  const history = useHistory();
   const [isFavorite, setFavorite] = useState(localStorage.getItem(slug));
   const [item, setArticle] = useState(receivedArticle);
 
   const setFavoriteArticle = () => {
-    articlesService
-      .setFavoriteArticle(slug)
-      .then(({ article }) => {
-        setArticle(article);
-        localStorage.setItem(slug, article.favorited);
-        setFavorite(localStorage.getItem(slug));
-      })
-      .catch((err) => console.log(err));
+    if (localStorage.getItem('token')) {
+      articlesService
+        .setFavoriteArticle(slug)
+        .then(({ article }) => {
+          setArticle(article);
+          localStorage.setItem(slug, article.favorited);
+          setFavorite(localStorage.getItem(slug));
+        })
+        .catch((err) => console.log(err));
+    } else {
+      history.push('/sign-in');
+    }
   };
 
   const setUnfavoriteArticle = () => {

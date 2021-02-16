@@ -1,17 +1,19 @@
 import React, { useState } from 'react';
-import PropTypes from 'prop-types';
 import { useForm } from 'react-hook-form';
 import { Link, Redirect } from 'react-router-dom';
-import { connect } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { Button } from 'antd';
 import isEmail from 'validator/es/lib/isEmail';
 import FormInput from '../FormInput/FormInput';
 import ArticlesService from '../../services/ArticlesService';
-import { setUser } from '../../actions/actions';
+import { setLoggedIn, setUser } from '../../actions/actions';
 import classes from './SignIn.module.scss';
 import ErrorIndicator from '../ErrorIndicator/ErrorIndicator';
 
-const SignIn = (props) => {
+const SignIn = () => {
+  const dispatch = useDispatch();
+  const auth = useSelector(({ loggedIn = false }) => loggedIn);
+
   const [serverErrors, setServerErrors] = useState({
     'email or password': null,
   });
@@ -35,13 +37,14 @@ const SignIn = (props) => {
           setServerErrors(body.errors);
           return;
         }
+        dispatch(setLoggedIn(true));
         localStorage.setItem('token', body.user.token);
-        props.setUser(body.user);
+        dispatch(setUser(body.user));
       })
       .catch((err) => console.log(err));
   };
 
-  if (localStorage.getItem('token')) {
+  if (auth) {
     return <Redirect to="/" />;
   }
 
@@ -94,11 +97,4 @@ const SignIn = (props) => {
   );
 };
 
-const mapStateToProps = ({ userData: { user } }) => ({ user });
-const mapDispatchToProps = { setUser };
-
-export default connect(mapStateToProps, mapDispatchToProps)(SignIn);
-
-SignIn.propTypes = {
-  setUser: PropTypes.func.isRequired,
-};
+export default SignIn;

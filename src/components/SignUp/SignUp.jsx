@@ -1,16 +1,17 @@
 import React, { useState } from 'react';
-import PropTypes from 'prop-types';
-import { connect } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { Link, Redirect } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
 import { Button } from 'antd';
 import isEmail from 'validator/es/lib/isEmail';
 import FormInput from '../FormInput/FormInput';
 import ArticlesService from '../../services/ArticlesService';
-import { setUser } from '../../actions/actions';
+import { setLoggedIn, setUser } from '../../actions/actions';
 import classes from './SignUp.module.scss';
 
-const SignUp = (props) => {
+const SignUp = () => {
+  const dispatch = useDispatch();
+  const auth = useSelector(({ loggedIn = false }) => loggedIn);
   const articlesService = new ArticlesService();
   const [serverErrors, setServerErrors] = useState({
     username: null,
@@ -38,12 +39,13 @@ const SignUp = (props) => {
           return;
         }
         localStorage.setItem('token', body.user.token);
-        props.setUser(body.user);
+        dispatch(setUser(body.user));
+        dispatch(setLoggedIn(true));
       })
       .catch((err) => console.log(err));
   };
 
-  if (localStorage.getItem('token')) {
+  if (auth) {
     return <Redirect to="/" />;
   }
 
@@ -145,11 +147,4 @@ const SignUp = (props) => {
   );
 };
 
-const mapStateToProps = ({ userData: { user } }) => ({ user });
-const mapDispatchToProps = { setUser };
-
-export default connect(mapStateToProps, mapDispatchToProps)(SignUp);
-
-SignUp.propTypes = {
-  setUser: PropTypes.func.isRequired,
-};
+export default SignUp;

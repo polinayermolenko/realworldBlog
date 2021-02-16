@@ -1,6 +1,5 @@
-import React, { useEffect } from 'react';
-import { connect } from 'react-redux';
-import PropTypes from 'prop-types';
+import React, { useEffect, useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import { useHistory } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
 import { Button } from 'antd';
@@ -12,22 +11,28 @@ import FormInput from '../FormInput/FormInput';
 import DefaultUserAvatar from '../../img/DefaultUserAvatar.svg';
 import classes from './EditProfile.module.scss';
 
-const EditProfile = (props) => {
+const EditProfile = () => {
   const articlesService = new ArticlesService();
   const history = useHistory();
+  const dispatch = useDispatch();
+  const user = useSelector(({ userData = {} }) => userData.user);
+  const [serverErrors, setServerErrors] = useState({
+    username: null,
+    email: null,
+    password: null,
+  });
   const { register, handleSubmit, watch, errors, setValue } = useForm({
     mode: 'onChange',
   });
 
   useEffect(() => {
-    const { user } = props;
     if (user) {
       setValue('username', `${user.username}`);
       setValue('email', `${user.email}`);
       setValue('image', `${user.image ?? DefaultUserAvatar}`);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [props]);
+  }, [user]);
 
   const onSubmit = ({ username, email, password, image }) => {
     const requestBody = {
@@ -35,8 +40,12 @@ const EditProfile = (props) => {
     };
     articlesService
       .updateUser(requestBody)
-      .then(({ user }) => {
-        props.setUser(user);
+      .then((body) => {
+        if (body.errors) {
+          setServerErrors(body.errors);
+          return;
+        }
+        dispatch(setUser(body.user));
         history.push('/');
       })
       .catch((err) => console.log(err));
@@ -74,6 +83,7 @@ const EditProfile = (props) => {
           label="Username"
           type="text"
           name="username"
+          serverErrors={serverErrors}
         />
         <FormInput
           ref={emailSettingsValidation}
@@ -82,6 +92,7 @@ const EditProfile = (props) => {
           label="Email Address"
           type="email"
           name="email"
+          serverErrors={serverErrors}
         />
         <FormInput
           ref={passwordSettingsValidation}
@@ -90,6 +101,7 @@ const EditProfile = (props) => {
           label="New Password"
           type="password"
           name="newPassword"
+          serverErrors={serverErrors}
         />
         <FormInput
           ref={urlSettingsValidation}
@@ -98,6 +110,7 @@ const EditProfile = (props) => {
           label="Avatar Image"
           type="url"
           name="image"
+          serverErrors={serverErrors}
         />
         <Button className={classes.Profile__Submit} type="primary" htmlType="submit">
           Save
@@ -107,15 +120,4 @@ const EditProfile = (props) => {
   );
 };
 
-const mapStateToProps = ({ userData: { user } }) => ({ user });
-const mapDispatchToProps = { setUser };
-
-export default connect(mapStateToProps, mapDispatchToProps)(EditProfile);
-EditProfile.defaultProps = {
-  user: {},
-};
-
-EditProfile.propTypes = {
-  user: PropTypes.instanceOf(Object),
-  setUser: PropTypes.func.isRequired,
-};
+export default EditProfile;

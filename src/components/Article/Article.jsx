@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { connect } from 'react-redux';
+import { useSelector } from 'react-redux';
 import { Link, useHistory } from 'react-router-dom';
 import { Button, Popconfirm } from 'antd';
 import { HeartOutlined, HeartFilled } from '@ant-design/icons';
@@ -9,22 +9,15 @@ import { format, parseISO } from 'date-fns';
 import ArticlesService from '../../services/ArticlesService';
 import classes from './Article.module.scss';
 
-const Article = ({ article, isFull = false, user = {}, onLike, onDislike, isFavorite }) => {
+const Article = ({ article, isFull = false, onLike, onDislike, isFavorite }) => {
   const history = useHistory();
   const articleService = new ArticlesService();
-  const { username: currentUser } = user;
-  if (article) {
-    const {
-      title,
-      slug,
-      body,
-      createdAt,
-      tagList,
-      description,
-      author: { username, image },
-      favoritesCount,
-    } = article;
+  const username = useSelector(({ userData: { user = {} } }) => user.username);
 
+  if (article) {
+    const { title, slug, body, createdAt, tagList, description, author, favoritesCount } = article;
+
+    const isOwnArticle = username === author.username && isFull;
     const date = format(new Date(parseISO(createdAt)), 'MMMM d, yyyy');
 
     const onDelete = () => {
@@ -67,12 +60,12 @@ const Article = ({ article, isFull = false, user = {}, onLike, onDislike, isFavo
           <div className={classes.Article__Right}>
             <div className={classes.Article__UserInfoWrapper}>
               <div className={classes.Article__UserInfo}>
-                <span className={classes.Article__Username}>{username}</span>
+                <span className={classes.Article__Username}>{author.username}</span>
                 <span>{date}</span>
               </div>
-              <img className={classes.Article__Avatar} src={image} width="46" height="46" alt="Avatar" />
+              <img className={classes.Article__Avatar} src={author.image} width="46" height="46" alt="Avatar" />
             </div>
-            {isFull && username === currentUser ? (
+            {isOwnArticle ? (
               <div className={classes.Article__Buttons}>
                 <Popconfirm
                   placement="rightTop"
@@ -103,11 +96,9 @@ const Article = ({ article, isFull = false, user = {}, onLike, onDislike, isFavo
   return null;
 };
 
-const mapStateToProps = ({ userData: { user } }) => ({ user });
-export default connect(mapStateToProps)(Article);
+export default Article;
 
 Article.defaultProps = {
-  user: {},
   article: {},
   isFull: false,
   onLike: () => {},
@@ -116,7 +107,6 @@ Article.defaultProps = {
 };
 
 Article.propTypes = {
-  user: PropTypes.instanceOf(Object),
   article: PropTypes.instanceOf(Object),
   isFull: PropTypes.bool,
   onLike: PropTypes.func,

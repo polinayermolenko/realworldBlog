@@ -1,27 +1,27 @@
 import React, { useEffect, useMemo } from 'react';
-import { connect } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
-import PropTypes from 'prop-types';
 import LoggedInUser from '../LoggedInUser/LoggedInUser';
 import LoggedOutUser from '../LoggedOutUser/LoggedOutUser';
 import ArticlesService from '../../services/ArticlesService';
 import { setUser } from '../../actions/actions';
 import classes from './Header.module.scss';
 
-const Header = (props) => {
+const Header = () => {
+  const dispatch = useDispatch();
+  const auth = useSelector(({ loggedIn = false }) => loggedIn);
   const articlesService = useMemo(() => new ArticlesService(), []);
+  const token = localStorage.getItem('token');
   useEffect(() => {
-    if (localStorage.getItem('token')) {
+    if (token) {
       articlesService
         .getCurrentUser()
         .then((body) => {
-          props.setUser(body.user);
+          dispatch(setUser(body.user));
         })
         .catch((err) => console.log(err));
     }
-
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [token, dispatch, articlesService]);
 
   return (
     <header className={classes.Header}>
@@ -30,14 +30,9 @@ const Header = (props) => {
           Realword Blog
         </Link>
       </h1>
-      {localStorage.getItem('token') ? <LoggedInUser /> : <LoggedOutUser />}
+      {auth || localStorage.getItem('token') ? <LoggedInUser /> : <LoggedOutUser />}
     </header>
   );
 };
-const mapStateToProps = ({ userData: { user } }) => ({ user });
-const mapDispatchToProps = { setUser };
-export default connect(mapStateToProps, mapDispatchToProps)(Header);
 
-Header.propTypes = {
-  setUser: PropTypes.func.isRequired,
-};
+export default Header;

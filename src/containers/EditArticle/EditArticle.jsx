@@ -1,38 +1,15 @@
 import { Alert, Spin } from 'antd';
-import React, { useEffect, useState } from 'react';
-import { useHistory, useParams } from 'react-router-dom';
-import ArticlesService from '../../services/ArticlesService';
-import TagForm from '../TagForm/TagForm';
-import NewArticleForm from '../NewArticleForm/NewArticleForm';
-import TagList from '../TagList/TagList';
+import React from 'react';
+import TagForm from '../../components/TagForm/TagForm';
+import NewArticleForm from '../../components/NewArticleForm/NewArticleForm';
+import TagList from '../../components/TagList/TagList';
 import { addTag, deleteTag } from '../../utils/addTagDeleteTag';
-import classes from '../NewArticle/NewArticle.module.scss';
+import classes from '../../components/NewArticle/NewArticle.module.scss';
 import cls from './EditArticle.module.scss';
+import useGetArticleEffect from './useGetArticleEffect';
 
 const EditArticle = () => {
-  const [item, setArticle] = useState(null);
-  const [hasError, setError] = useState(false);
-  const [isLoading, setLoading] = useState(true);
-  const [tags, setTags] = useState([]);
-  const articlesService = new ArticlesService();
-  const history = useHistory();
-  const { slug } = useParams();
-
-  useEffect(() => {
-    articlesService
-      .getArticle(slug)
-      .then(({ article }) => {
-        setLoading(false);
-        setArticle(article);
-        setTags(article.tagList.map((tag) => ({ name: tag, id: `${tag}${Math.random()}` })));
-      })
-      .catch(() => {
-        setLoading(false);
-        setError(true);
-      });
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [slug]);
-
+  const { item, hasError, isLoading, tags, history, setTags, articlesService, slug } = useGetArticleEffect();
   const submitArticle = ({ title, description, body }) => {
     const tagList = tags.map((tag) => tag.name);
     const requestBody = {

@@ -6,12 +6,10 @@ import { Button, Popconfirm } from 'antd';
 import { HeartOutlined, HeartFilled } from '@ant-design/icons';
 import ReactMarkdown from 'react-markdown';
 import { format, parseISO } from 'date-fns';
-import ArticlesService from '../../services/ArticlesService';
 import classes from './Article.module.scss';
 
-const Article = ({ article, isFull = false, onLike, onDislike, isFavorite }) => {
+const Article = ({ article, isFull = false, onLike, onDislike, onDelete, isFavorite }) => {
   const history = useHistory();
-  const articleService = new ArticlesService();
   const username = useSelector(({ userData: { user = {} } }) => user.username);
 
   if (article) {
@@ -19,13 +17,6 @@ const Article = ({ article, isFull = false, onLike, onDislike, isFavorite }) => 
 
     const isOwnArticle = username === author.username && isFull;
     const date = format(new Date(parseISO(createdAt)), 'MMMM d, yyyy');
-
-    const onDelete = () => {
-      articleService
-        .deleteArticle(slug)
-        .then(() => history.push('/'))
-        .catch((err) => console.log(err));
-    };
 
     return (
       <article className={classes.Article}>
@@ -103,6 +94,7 @@ Article.defaultProps = {
   isFull: false,
   onLike: () => {},
   onDislike: () => {},
+  onDelete: () => {},
   isFavorite: '',
 };
 
@@ -110,6 +102,7 @@ Article.propTypes = {
   article: PropTypes.instanceOf(Object),
   isFull: PropTypes.bool,
   onLike: PropTypes.func,
+  onDelete: PropTypes.func,
   onDislike: PropTypes.func,
   isFavorite: PropTypes.string,
 };

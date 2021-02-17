@@ -7,7 +7,7 @@ import SignIn from '../SignIn/SignIn';
 import SignUp from '../SignUp/SignUp';
 import EditProfile from '../EditProfile/EditProfile';
 import NewArticle from '../NewArticle/NewArticle';
-import EditArticle from '../EditArticle/EditArticle';
+import EditArticle from '../../containers/EditArticle/EditArticle';
 import PrivateRoute from '../PrivateRoute/PrivateRoute';
 import classes from './App.module.scss';
 import 'antd/dist/antd.css';

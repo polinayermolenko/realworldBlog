@@ -37,6 +37,13 @@ const ArticleWrapper = ({ article: receivedArticle, isFull }) => {
       .catch((err) => console.log(err));
   };
 
+  const onDelete = () => {
+    articlesService
+      .deleteArticle(slug)
+      .then(() => history.push('/'))
+      .catch((err) => console.log(err));
+  };
+
   if (item) {
     return (
       <Article
@@ -45,6 +52,7 @@ const ArticleWrapper = ({ article: receivedArticle, isFull }) => {
         isFavorite={isFavorite}
         onLike={setFavoriteArticle}
         onDislike={setUnfavoriteArticle}
+        onDelete={onDelete}
       />
     );
   }

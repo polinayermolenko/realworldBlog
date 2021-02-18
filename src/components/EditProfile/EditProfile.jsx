@@ -1,38 +1,28 @@
-import React, { useEffect, useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-import { useHistory } from 'react-router-dom';
-import { useForm } from 'react-hook-form';
+import React from 'react';
 import { Button } from 'antd';
-import isEmail from 'validator/es/lib/isEmail';
-import isURL from 'validator/es/lib/isURL';
 import ArticlesService from '../../services/ArticlesService';
 import { setUser } from '../../actions/actions';
 import FormInput from '../FormInput/FormInput';
-import DefaultUserAvatar from '../../img/DefaultUserAvatar.svg';
+import useValidation from '../../hooks/useValidation';
+import useBaseHooks from '../../hooks/useBaseHooks';
+import useDefaultValuesEffect from './useDefaultValuesEffect';
 import classes from './EditProfile.module.scss';
 
 const EditProfile = () => {
+  const { dispatch, history, currentUser } = useBaseHooks();
+  const {
+    usernameSettingsValidation,
+    emailSettingsValidation,
+    passwordEditSettingsValidation,
+    urlSettingsValidation,
+    setValue,
+    handleSubmit,
+    serverErrors,
+    errors,
+    setServerErrors,
+  } = useValidation();
   const articlesService = new ArticlesService();
-  const history = useHistory();
-  const dispatch = useDispatch();
-  const user = useSelector(({ userData = {} }) => userData.user);
-  const [serverErrors, setServerErrors] = useState({
-    username: null,
-    email: null,
-    password: null,
-  });
-  const { register, handleSubmit, watch, errors, setValue } = useForm({
-    mode: 'onChange',
-  });
-
-  useEffect(() => {
-    if (user) {
-      setValue('username', `${user.username}`);
-      setValue('email', `${user.email}`);
-      setValue('image', `${user.image ?? DefaultUserAvatar}`);
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [user]);
+  useDefaultValuesEffect(currentUser, setValue);
 
   const onSubmit = ({ username, email, password, image }) => {
     const requestBody = {
@@ -50,27 +40,6 @@ const EditProfile = () => {
       })
       .catch((err) => console.log(err));
   };
-
-  const usernameSettingsValidation = register({
-    required: 'Username is required',
-    minLength: { value: 3, message: 'Your username needs to be at least 3 characters.' },
-    maxLength: { value: 20, message: 'Your username needs to be no more than 20 characters long.' },
-  });
-
-  const emailSettingsValidation = register({
-    required: 'Email is required',
-    validate: () => isEmail(watch('email')) || 'Invalid email format',
-  });
-
-  const passwordSettingsValidation = register({
-    minLength: { value: 8, message: 'Your password needs to be at least 8 characters.' },
-    maxLength: { value: 40, message: 'Your password needs to be no more than 40 characters long.' },
-  });
-
-  const urlSettingsValidation = register({
-    required: false,
-    validate: () => isURL(watch('image')) || 'Invalid url format',
-  });
 
   return (
     <div className={classes.Profile}>
@@ -95,7 +64,7 @@ const EditProfile = () => {
           serverErrors={serverErrors}
         />
         <FormInput
-          ref={passwordSettingsValidation}
+          ref={passwordEditSettingsValidation}
           id="newPassword"
           error={errors.newPassword}
           label="New Password"

@@ -49,11 +49,12 @@
   margin: 0;
   padding: 0;
   display: flex;
-  overflow-wrap: break-word;
   list-style: none;
 }
 
 .Article__TagsItem {
+  max-width: 200px;
+  overflow-wrap: break-word;
   padding: 2px 5px;
   margin-right: 5px;
   border: 1px solid rgba(0, 0, 0, 0.5);

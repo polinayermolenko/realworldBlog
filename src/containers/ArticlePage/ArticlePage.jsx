@@ -1,30 +1,11 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import { Alert, Spin } from 'antd';
-import { useParams } from 'react-router-dom';
-import ArticlesService from '../../services/ArticlesService';
-import classes from './ArticlePage.module.scss';
 import ArticleWrapper from '../ArticleWrapper/ArticleWrapper';
+import useGetArticleEffect from '../../hooks/useGetArticleEffect';
+import classes from './ArticlePage.module.scss';
 
 const ArticlePage = () => {
-  const articlesService = new ArticlesService();
-  const [item, setArticle] = useState(null);
-  const [hasError, setError] = useState(false);
-  const [isLoading, setLoading] = useState(true);
-  const { slug } = useParams();
-
-  useEffect(() => {
-    articlesService
-      .getArticle(slug)
-      .then(({ article }) => {
-        setLoading(false);
-        setArticle(article);
-      })
-      .catch(() => {
-        setLoading(false);
-        setError(true);
-      });
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [slug]);
+  const { item, hasError, isLoading } = useGetArticleEffect();
 
   if (hasError) {
     return <Alert message="Error" description="Couldn't find the article" type="error" showIcon />;

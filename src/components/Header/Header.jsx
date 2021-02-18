@@ -1,27 +1,14 @@
-import React, { useEffect, useMemo } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import React from 'react';
 import { Link } from 'react-router-dom';
+import useBaseHooks from '../../hooks/useBaseHooks';
 import LoggedInUser from '../LoggedInUser/LoggedInUser';
 import LoggedOutUser from '../LoggedOutUser/LoggedOutUser';
-import ArticlesService from '../../services/ArticlesService';
-import { setUser } from '../../actions/actions';
+import useGetCurrentUserEffect from './useGetCurrentUserEffect';
 import classes from './Header.module.scss';
 
 const Header = () => {
-  const dispatch = useDispatch();
-  const auth = useSelector(({ loggedIn = false }) => loggedIn);
-  const articlesService = useMemo(() => new ArticlesService(), []);
-  const token = localStorage.getItem('token');
-  useEffect(() => {
-    if (token) {
-      articlesService
-        .getCurrentUser()
-        .then((body) => {
-          dispatch(setUser(body.user));
-        })
-        .catch((err) => console.log(err));
-    }
-  }, [token, dispatch, articlesService]);
+  const { auth, articlesService } = useBaseHooks();
+  useGetCurrentUserEffect(articlesService);
 
   return (
     <header className={classes.Header}>

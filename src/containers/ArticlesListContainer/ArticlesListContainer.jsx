@@ -1,45 +1,11 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import { Alert, Pagination, Spin } from 'antd';
-import ArticlesService from '../../services/ArticlesService';
-import classes from './ArticlesListContainer.module.scss';
 import ArticlesList from '../../components/ArticlesList/ArticlesList';
+import useGetArticlesEffect from './useGetAtriclesEffect';
+import classes from './ArticlesListContainer.module.scss';
 
 const ArticlesListContainer = () => {
-  const [articlesList, setAtricles] = useState([]);
-  const [activePage, setActivePage] = useState(1);
-  const [isLoading, setLoading] = useState(true);
-  const [hasError, setError] = useState(false);
-
-  const articlesService = new ArticlesService();
-
-  useEffect(() => {
-    articlesService
-      .getArticles()
-      .then(({ articles }) => {
-        setLoading(false);
-        setAtricles(articles);
-      })
-      .catch(() => {
-        setLoading(false);
-        setError(true);
-      });
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
-
-  const onPageChange = (page) => {
-    setLoading(true);
-    articlesService
-      .getArticles(page)
-      .then(({ articles }) => {
-        setLoading(false);
-        setAtricles(articles);
-      })
-      .catch(() => {
-        setLoading(false);
-        setError(true);
-      });
-    setActivePage(page);
-  };
+  const { articlesList, activePage, isLoading, hasError, onPageChange } = useGetArticlesEffect();
 
   if (isLoading) {
     return <Spin className={classes.Spin} size="large" tip="Loading..." />;

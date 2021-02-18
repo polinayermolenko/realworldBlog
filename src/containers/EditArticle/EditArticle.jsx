@@ -4,12 +4,15 @@ import TagForm from '../../components/TagForm/TagForm';
 import NewArticleForm from '../../components/NewArticleForm/NewArticleForm';
 import TagList from '../../components/TagList/TagList';
 import { addTag, deleteTag } from '../../utils/addTagDeleteTag';
+import useGetArticleEffect from '../../hooks/useGetArticleEffect';
+import useBaseHooks from '../../hooks/useBaseHooks';
 import classes from '../../components/NewArticle/NewArticle.module.scss';
 import cls from './EditArticle.module.scss';
-import useGetArticleEffect from './useGetArticleEffect';
 
 const EditArticle = () => {
-  const { item, hasError, isLoading, tags, history, setTags, articlesService, slug } = useGetArticleEffect();
+  const { slug, history, articlesService } = useBaseHooks();
+  const { item, hasError, isLoading, tags, setTags } = useGetArticleEffect();
+
   const submitArticle = ({ title, description, body }) => {
     const tagList = tags.map((tag) => tag.name);
     const requestBody = {

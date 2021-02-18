@@ -1,26 +1,27 @@
-import React, { useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import React from 'react';
 import { Link, Redirect } from 'react-router-dom';
-import { useForm } from 'react-hook-form';
 import { Button } from 'antd';
-import isEmail from 'validator/es/lib/isEmail';
-import FormInput from '../FormInput/FormInput';
 import ArticlesService from '../../services/ArticlesService';
+import FormInput from '../FormInput/FormInput';
 import { setLoggedIn, setUser } from '../../actions/actions';
+import useValidation from '../../hooks/useValidation';
+import useBaseHooks from '../../hooks/useBaseHooks';
 import classes from './SignUp.module.scss';
 
 const SignUp = () => {
-  const dispatch = useDispatch();
-  const auth = useSelector(({ loggedIn = false }) => loggedIn);
   const articlesService = new ArticlesService();
-  const [serverErrors, setServerErrors] = useState({
-    username: null,
-    email: null,
-    password: null,
-  });
-  const { register, handleSubmit, watch, errors } = useForm({
-    mode: 'onChange',
-  });
+  const { dispatch, auth } = useBaseHooks();
+  const {
+    handleSubmit,
+    errors,
+    serverErrors,
+    setServerErrors,
+    usernameSettingsValidation,
+    emailSettingsValidation,
+    passwordSettingsValidation,
+    passwordRepeatSettingsValidation,
+    agreementSettingsValidation,
+  } = useValidation();
 
   const onSubmit = ({ username, email, password }) => {
     const requestBody = {
@@ -48,34 +49,6 @@ const SignUp = () => {
   if (auth) {
     return <Redirect to="/" />;
   }
-
-  const passwordValue = watch('password', '');
-
-  const usernameSettingsValidation = register({
-    required: 'Username is required',
-    minLength: { value: 3, message: 'Your username needs to be at least 3 characters.' },
-    maxLength: { value: 20, message: 'Your username needs to be no more than 20 characters long.' },
-  });
-
-  const emailSettingsValidation = register({
-    required: 'Email is required',
-    validate: () => isEmail(watch('email')) || 'Invalid email format',
-  });
-
-  const passwordSettingsValidation = register({
-    required: 'Password is required',
-    minLength: { value: 8, message: 'Your password needs to be at least 8 characters.' },
-    maxLength: { value: 40, message: 'Your password needs to be no more than 40 characters long.' },
-  });
-
-  const passwordRepeatSettingsValidation = register({
-    required: 'Password is required',
-    validate: (value) => value === passwordValue || 'Passwords must match',
-  });
-
-  const agreementSettingsValidation = register({
-    required: 'Please accept the terms and conditions to continue',
-  });
 
   return (
     <div className={classes.SignUp}>

@@ -1,27 +1,25 @@
-import React, { useState } from 'react';
-import { useForm } from 'react-hook-form';
+import React from 'react';
 import { Link, Redirect } from 'react-router-dom';
-import { useDispatch, useSelector } from 'react-redux';
 import { Button } from 'antd';
-import isEmail from 'validator/es/lib/isEmail';
 import FormInput from '../FormInput/FormInput';
-import ArticlesService from '../../services/ArticlesService';
 import { setLoggedIn, setUser } from '../../actions/actions';
-import classes from './SignIn.module.scss';
+import ArticlesService from '../../services/ArticlesService';
 import ErrorIndicator from '../ErrorIndicator/ErrorIndicator';
+import useValidation from '../../hooks/useValidation';
+import useBaseHooks from '../../hooks/useBaseHooks';
+import classes from './SignIn.module.scss';
 
 const SignIn = () => {
-  const dispatch = useDispatch();
-  const auth = useSelector(({ loggedIn = false }) => loggedIn);
-
-  const [serverErrors, setServerErrors] = useState({
-    'email or password': null,
-  });
-
   const articlesService = new ArticlesService();
-  const { register, handleSubmit, watch, errors } = useForm({
-    mode: 'onChange',
-  });
+  const { dispatch, auth } = useBaseHooks();
+  const {
+    handleSubmit,
+    errors,
+    emailSettingsValidation,
+    passwordSettingsValidation,
+    serverErrors,
+    setServerErrors,
+  } = useValidation();
 
   const onSubmit = ({ email, password }) => {
     const requestBody = {
@@ -47,17 +45,6 @@ const SignIn = () => {
   if (auth) {
     return <Redirect to="/" />;
   }
-
-  const emailSettingsValidation = register({
-    required: 'Email is required',
-    validate: () => isEmail(watch('email')) || 'Invalid email format',
-  });
-
-  const passwordSettingsValidation = register({
-    required: 'Password is required',
-    minLength: { value: 8, message: 'Your password needs to be at least 8 characters.' },
-    maxLength: { value: 40, message: 'Your password needs to be no more than 40 characters long.' },
-  });
 
   return (
     <div className={classes.SignIn}>

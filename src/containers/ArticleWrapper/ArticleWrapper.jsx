@@ -1,49 +1,10 @@
-import React, { useState } from 'react';
-import { useHistory } from 'react-router-dom';
+import React from 'react';
 import PropTypes, { bool } from 'prop-types';
 import Article from '../../components/Article/Article';
-import ArticlesService from '../../services/ArticlesService';
+import useLikes from './useLikes';
 
 const ArticleWrapper = ({ article: receivedArticle, isFull }) => {
-  const articlesService = new ArticlesService();
-  const { slug } = receivedArticle;
-  const history = useHistory();
-  const [isFavorite, setFavorite] = useState(localStorage.getItem(slug));
-  const [item, setArticle] = useState(receivedArticle);
-
-  const setFavoriteArticle = () => {
-    if (localStorage.getItem('token')) {
-      articlesService
-        .setFavoriteArticle(slug)
-        .then(({ article }) => {
-          setArticle(article);
-          localStorage.setItem(slug, article.favorited);
-          setFavorite(localStorage.getItem(slug));
-        })
-        .catch((err) => console.log(err));
-    } else {
-      history.push('/sign-in');
-    }
-  };
-
-  const setUnfavoriteArticle = () => {
-    articlesService
-      .setUnfavoriteArticle(slug)
-      .then(({ article }) => {
-        setArticle(article);
-        localStorage.removeItem(slug);
-        setFavorite(localStorage.getItem(slug));
-      })
-      .catch((err) => console.log(err));
-  };
-
-  const onDelete = () => {
-    articlesService
-      .deleteArticle(slug)
-      .then(() => history.push('/'))
-      .catch((err) => console.log(err));
-  };
-
+  const { setFavoriteArticle, setUnfavoriteArticle, onDelete, isFavorite, item } = useLikes(receivedArticle);
   if (item) {
     return (
       <Article

@@ -1,16 +1,13 @@
-import React, { useState } from 'react';
-import { useHistory } from 'react-router-dom';
+import React from 'react';
 import NewArticleForm from '../NewArticleForm/NewArticleForm';
 import TagForm from '../TagForm/TagForm';
 import TagList from '../TagList/TagList';
-import ArticlesService from '../../services/ArticlesService';
-import classes from './NewArticle.module.scss';
 import { addTag, deleteTag } from '../../utils/addTagDeleteTag';
+import useBaseHooks from '../../hooks/useBaseHooks';
+import classes from './NewArticle.module.scss';
 
 const NewArticle = () => {
-  const articlesService = new ArticlesService();
-  const history = useHistory();
-  const [tags, setTags] = useState([]);
+  const { tags, setTags, articlesService, history } = useBaseHooks();
 
   const submitArticle = ({ title, description, body }) => {
     const tagList = tags.map((tag) => tag.name);

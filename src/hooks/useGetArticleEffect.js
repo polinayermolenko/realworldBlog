@@ -23,7 +23,7 @@ const useGetArticleEffect = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [slug]);
 
-  return { item, hasError, isLoading, tags, history, setTags, articlesService, slug };
+  return { item, hasError, isLoading, tags, history, setTags, articlesService, slug, setError };
 };
 
 export default useGetArticleEffect;

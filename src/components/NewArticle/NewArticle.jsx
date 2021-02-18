@@ -7,7 +7,7 @@ import useBaseHooks from '../../hooks/useBaseHooks';
 import classes from './NewArticle.module.scss';
 
 const NewArticle = () => {
-  const { tags, setTags, articlesService, history } = useBaseHooks();
+  const { tags, setTags, articlesService, history, setErrors } = useBaseHooks();
 
   const submitArticle = ({ title, description, body }) => {
     const tagList = tags.map((tag) => tag.name);
@@ -23,7 +23,7 @@ const NewArticle = () => {
     articlesService
       .createArticle(requestBody)
       .then(({ article: { slug } }) => history.push(`/articles/${slug}`))
-      .catch((err) => console.log(err));
+      .catch(() => setErrors(true));
   };
 
   return (

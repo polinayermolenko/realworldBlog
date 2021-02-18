@@ -11,7 +11,7 @@ import classes from './SignIn.module.scss';
 
 const SignIn = () => {
   const articlesService = new ArticlesService();
-  const { dispatch, auth } = useBaseHooks();
+  const { dispatch, auth, setErrors } = useBaseHooks();
   const {
     handleSubmit,
     errors,
@@ -39,7 +39,7 @@ const SignIn = () => {
         localStorage.setItem('token', body.user.token);
         dispatch(setUser(body.user));
       })
-      .catch((err) => console.log(err));
+      .catch(() => setErrors(true));
   };
 
   if (auth) {

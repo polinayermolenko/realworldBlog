@@ -1,9 +1,9 @@
 import { useEffect } from 'react';
-import { useDispatch } from 'react-redux';
 import { setUser } from '../../actions/actions';
+import useBaseHooks from '../../hooks/useBaseHooks';
 
 const useGetCurrentUserEffect = (articlesService) => {
-  const dispatch = useDispatch();
+  const { setErrors, dispatch } = useBaseHooks();
   const token = localStorage.getItem('token');
   useEffect(() => {
     if (token) {
@@ -12,9 +12,9 @@ const useGetCurrentUserEffect = (articlesService) => {
         .then((body) => {
           dispatch(setUser(body.user));
         })
-        .catch((err) => console.log(err));
+        .catch(() => setErrors(true));
     }
-  }, [token, dispatch, articlesService]);
+  }, [token, dispatch, articlesService, setErrors]);
 };
 
 export default useGetCurrentUserEffect;

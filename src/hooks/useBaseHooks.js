@@ -12,8 +12,9 @@ const useBaseHooks = () => {
   const username = useSelector(({ userData: { user = {} } }) => user.username);
   const articlesService = useMemo(() => new ArticlesService(), []);
   const [tags, setTags] = useState([]);
+  const [error, setErrors] = useState(null);
 
-  return { slug, dispatch, auth, history, currentUser, username, articlesService, tags, setTags };
+  return { error, setErrors, slug, dispatch, auth, history, currentUser, username, articlesService, tags, setTags };
 };
 
 export default useBaseHooks;

@@ -1,11 +1,11 @@
 import { useState } from 'react';
-import { useHistory } from 'react-router-dom';
+import useBaseHooks from '../../hooks/useBaseHooks';
 import ArticlesService from '../../services/ArticlesService';
 
 const useLikes = (receivedArticle) => {
   const articlesService = new ArticlesService();
   const { slug } = receivedArticle;
-  const history = useHistory();
+  const { setErrors, history } = useBaseHooks();
   const [isFavorite, setFavorite] = useState(localStorage.getItem(slug));
   const [item, setArticle] = useState(receivedArticle);
 
@@ -18,7 +18,7 @@ const useLikes = (receivedArticle) => {
           localStorage.setItem(slug, article.favorited);
           setFavorite(localStorage.getItem(slug));
         })
-        .catch((err) => console.log(err));
+        .catch(() => setErrors(true));
     } else {
       history.push('/sign-in');
     }
@@ -32,14 +32,14 @@ const useLikes = (receivedArticle) => {
         localStorage.removeItem(slug);
         setFavorite(localStorage.getItem(slug));
       })
-      .catch((err) => console.log(err));
+      .catch(() => setErrors(true));
   };
 
   const onDelete = () => {
     articlesService
       .deleteArticle(slug)
       .then(() => history.push('/'))
-      .catch((err) => console.log(err));
+      .catch(() => setErrors(true));
   };
 
   return { setFavoriteArticle, setUnfavoriteArticle, onDelete, isFavorite, item };

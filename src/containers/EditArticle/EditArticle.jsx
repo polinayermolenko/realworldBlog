@@ -11,7 +11,7 @@ import cls from './EditArticle.module.scss';
 
 const EditArticle = () => {
   const { slug, history, articlesService } = useBaseHooks();
-  const { item, hasError, isLoading, tags, setTags } = useGetArticleEffect();
+  const { item, hasError, isLoading, tags, setTags, setError } = useGetArticleEffect();
 
   const submitArticle = ({ title, description, body }) => {
     const tagList = tags.map((tag) => tag.name);
@@ -28,7 +28,7 @@ const EditArticle = () => {
       .then(({ article }) => {
         history.push(`/articles/${article.slug}`);
       })
-      .catch((err) => console.log(err));
+      .catch(() => setError(true));
   };
 
   if (hasError) {

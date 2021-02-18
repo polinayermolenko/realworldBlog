@@ -9,7 +9,7 @@ import useDefaultValuesEffect from './useDefaultValuesEffect';
 import classes from './EditProfile.module.scss';
 
 const EditProfile = () => {
-  const { dispatch, history, currentUser } = useBaseHooks();
+  const { dispatch, history, currentUser, setErrors } = useBaseHooks();
   const {
     usernameSettingsValidation,
     emailSettingsValidation,
@@ -38,7 +38,7 @@ const EditProfile = () => {
         dispatch(setUser(body.user));
         history.push('/');
       })
-      .catch((err) => console.log(err));
+      .catch(() => setErrors(true));
   };
 
   return (

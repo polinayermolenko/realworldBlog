@@ -10,7 +10,7 @@ import classes from './SignUp.module.scss';
 
 const SignUp = () => {
   const articlesService = new ArticlesService();
-  const { dispatch, auth } = useBaseHooks();
+  const { dispatch, auth, setErrors } = useBaseHooks();
   const {
     handleSubmit,
     errors,
@@ -43,7 +43,7 @@ const SignUp = () => {
         dispatch(setUser(body.user));
         dispatch(setLoggedIn(true));
       })
-      .catch((err) => console.log(err));
+      .catch(() => setErrors(true));
   };
 
   if (auth) {

@@ -1,14 +1,16 @@
-import React from 'react';
+import React, { useMemo } from 'react';
 import { Link } from 'react-router-dom';
 import useBaseHooks from '../../hooks/useBaseHooks';
 import LoggedInUser from '../LoggedInUser/LoggedInUser';
 import LoggedOutUser from '../LoggedOutUser/LoggedOutUser';
 import useGetCurrentUserEffect from './useGetCurrentUserEffect';
 import classes from './Header.module.scss';
+import UserService from '../../services/UserService';
 
 const Header = () => {
-  const { auth, articlesService } = useBaseHooks();
-  useGetCurrentUserEffect(articlesService);
+  const userService = useMemo(() => new UserService(), []);
+  const { auth } = useBaseHooks();
+  useGetCurrentUserEffect(userService);
 
   return (
     <header className={classes.Header}>

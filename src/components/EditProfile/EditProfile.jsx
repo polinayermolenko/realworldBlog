@@ -1,12 +1,12 @@
 import React from 'react';
 import { Button } from 'antd';
-import ArticlesService from '../../services/ArticlesService';
 import { setUser } from '../../actions/actions';
 import FormInput from '../FormInput/FormInput';
 import useValidation from '../../hooks/useValidation';
 import useBaseHooks from '../../hooks/useBaseHooks';
 import useDefaultValuesEffect from './useDefaultValuesEffect';
 import classes from './EditProfile.module.scss';
+import UserService from '../../services/UserService';
 
 const EditProfile = () => {
   const { dispatch, history, currentUser, setErrors } = useBaseHooks();
@@ -21,14 +21,14 @@ const EditProfile = () => {
     errors,
     setServerErrors,
   } = useValidation();
-  const articlesService = new ArticlesService();
+  const userService = new UserService();
   useDefaultValuesEffect(currentUser, setValue);
 
   const onSubmit = ({ username, email, password, image }) => {
     const requestBody = {
       user: { username, email, password, image },
     };
-    articlesService
+    userService
       .updateUser(requestBody)
       .then((body) => {
         if (body.errors) {

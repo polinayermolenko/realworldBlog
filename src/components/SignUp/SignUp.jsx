@@ -1,15 +1,17 @@
 import React from 'react';
 import { Link, Redirect } from 'react-router-dom';
 import { Button } from 'antd';
-import ArticlesService from '../../services/ArticlesService';
+// import ArticlesService from '../../services/ArticlesService';
 import FormInput from '../FormInput/FormInput';
 import { setLoggedIn, setUser } from '../../actions/actions';
 import useValidation from '../../hooks/useValidation';
 import useBaseHooks from '../../hooks/useBaseHooks';
 import classes from './SignUp.module.scss';
+import UserService from '../../services/UserService';
 
 const SignUp = () => {
-  const articlesService = new ArticlesService();
+  // const articlesService = new ArticlesService();
+  const userService = new UserService();
   const { dispatch, auth, setErrors } = useBaseHooks();
   const {
     handleSubmit,
@@ -32,7 +34,7 @@ const SignUp = () => {
       },
     };
 
-    articlesService
+    userService
       .registerUser(requestBody)
       .then((body) => {
         if (body.errors) {

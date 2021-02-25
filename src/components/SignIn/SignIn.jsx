@@ -3,14 +3,16 @@ import { Link, Redirect } from 'react-router-dom';
 import { Button } from 'antd';
 import FormInput from '../FormInput/FormInput';
 import { setLoggedIn, setUser } from '../../actions/actions';
-import ArticlesService from '../../services/ArticlesService';
+// import ArticlesService from '../../services/ArticlesService';
 import ErrorIndicator from '../ErrorIndicator/ErrorIndicator';
 import useValidation from '../../hooks/useValidation';
 import useBaseHooks from '../../hooks/useBaseHooks';
 import classes from './SignIn.module.scss';
+import UserService from '../../services/UserService';
 
 const SignIn = () => {
-  const articlesService = new ArticlesService();
+  // const articlesService = new ArticlesService();
+  const userService = new UserService();
   const { dispatch, auth, setErrors } = useBaseHooks();
   const {
     handleSubmit,
@@ -28,7 +30,7 @@ const SignIn = () => {
         password,
       },
     };
-    articlesService
+    userService
       .logInUser(requestBody)
       .then((body) => {
         if (body.errors) {

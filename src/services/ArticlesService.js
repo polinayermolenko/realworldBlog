@@ -3,6 +3,8 @@ import GetResponseService from './GetResponseService';
 export default class ArticlesService extends GetResponseService {
   baseUrl = `https://conduit.productionready.io/api/articles`;
 
+  token = `Token ${localStorage.getItem('token')}`;
+
   async getArticles(pages = 1) {
     const res = await this.getResponse(`${this.baseUrl}?offset=${pages * 20 - 20}`);
     return res;
@@ -18,7 +20,7 @@ export default class ArticlesService extends GetResponseService {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json;charset=utf-8',
-        Authorization: `Token ${localStorage.getItem('token')}`,
+        Authorization: this.token,
       },
       body: JSON.stringify(data),
     };
@@ -31,7 +33,7 @@ export default class ArticlesService extends GetResponseService {
       method: 'PUT',
       headers: {
         'Content-Type': 'application/json;charset=utf-8',
-        Authorization: `Token ${localStorage.getItem('token')}`,
+        Authorization: this.token,
       },
       body: JSON.stringify(data),
     };
@@ -44,7 +46,7 @@ export default class ArticlesService extends GetResponseService {
       method: 'DELETE',
       headers: {
         'Content-Type': 'application/json;charset=utf-8',
-        Authorization: `Token ${localStorage.getItem('token')}`,
+        Authorization: this.token,
       },
     };
     const res = await this.getResponse(`${this.baseUrl}/${slug}`, options);
@@ -56,7 +58,7 @@ export default class ArticlesService extends GetResponseService {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json;charset=utf-8',
-        Authorization: `Token ${localStorage.getItem('token')}`,
+        Authorization: this.token,
       },
     };
     const res = await this.getResponse(`${this.baseUrl}/${slug}/favorite`, options);
@@ -68,7 +70,7 @@ export default class ArticlesService extends GetResponseService {
       method: 'DELETE',
       headers: {
         'Content-Type': 'application/json;charset=utf-8',
-        Authorization: `Token ${localStorage.getItem('token')}`,
+        Authorization: this.token,
       },
     };
     const res = await this.getResponse(`${this.baseUrl}/${slug}/favorite`, options);

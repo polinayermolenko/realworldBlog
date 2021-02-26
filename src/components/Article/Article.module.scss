@@ -94,7 +94,7 @@
 }
 
 .Article__Heart {
-  margin-right: 5px;
+  margin-right: 10px;
   align-self: center;
   color: rgba(0, 0, 0, 0.75);
   cursor: pointer;
@@ -102,6 +102,10 @@
 
 .Article__Heart:hover {
   color: #ff0707;
+}
+
+.Article__LoadingLike {
+  margin-right: 10px;
 }
 
 .Article__Avatar {

@@ -4,11 +4,11 @@ import ReactMarkdown from 'react-markdown';
 import { Link } from 'react-router-dom';
 import { Button, Popconfirm } from 'antd';
 import { format, parseISO } from 'date-fns';
-import { HeartOutlined, HeartFilled } from '@ant-design/icons';
+import { HeartOutlined, HeartFilled, LoadingOutlined } from '@ant-design/icons';
 import useBaseHooks from '../../hooks/useBaseHooks';
 import classes from './Article.module.scss';
 
-const Article = ({ article, isFull = false, onLike, onDislike, onDelete, isFavorite }) => {
+const Article = ({ article, isFull = false, isLikeRequestSending, onLike, onDislike, onDelete, isFavorite }) => {
   const { history, username } = useBaseHooks();
 
   if (article) {
@@ -16,7 +16,21 @@ const Article = ({ article, isFull = false, onLike, onDislike, onDelete, isFavor
 
     const isOwnArticle = username === author.username && isFull;
     const date = format(new Date(parseISO(createdAt)), 'MMMM d, yyyy');
-
+    const likeContent = isLikeRequestSending ? (
+      <LoadingOutlined className={classes.Article__LoadingLike} style={{ fontSize: '18px' }} spin />
+    ) : (
+      <>
+        {isFavorite ? (
+          <HeartFilled
+            onClick={onDislike}
+            className={classes.Article__Heart}
+            style={{ fontSize: '18px', color: '#ff0707' }}
+          />
+        ) : (
+          <HeartOutlined onClick={onLike} className={classes.Article__Heart} style={{ fontSize: '18px' }} />
+        )}
+      </>
+    );
     return (
       <article className={classes.Article}>
         <header className={classes.Article__Header}>
@@ -27,15 +41,7 @@ const Article = ({ article, isFull = false, onLike, onDislike, onDelete, isFavor
                   {title}
                 </Link>
               </h2>
-              {isFavorite ? (
-                <HeartFilled
-                  onClick={onDislike}
-                  className={classes.Article__Heart}
-                  style={{ fontSize: '18px', color: '#ff0707' }}
-                />
-              ) : (
-                <HeartOutlined onClick={onLike} className={classes.Article__Heart} style={{ fontSize: '18px' }} />
-              )}
+              {likeContent}
               <span className={classes.Article__Like}>{favoritesCount}</span>
             </div>
             <ul className={classes.Article__Tags}>
@@ -95,6 +101,7 @@ Article.defaultProps = {
   onDislike: () => {},
   onDelete: () => {},
   isFavorite: '',
+  isLikeRequestSending: false,
 };
 
 Article.propTypes = {
@@ -104,4 +111,5 @@ Article.propTypes = {
   onDelete: PropTypes.func,
   onDislike: PropTypes.func,
   isFavorite: PropTypes.string,
+  isLikeRequestSending: PropTypes.bool,
 };

@@ -4,7 +4,9 @@ import Article from '../../components/Article/Article';
 import useLikes from './useLikes';
 
 const ArticleWrapper = ({ article: receivedArticle, isFull }) => {
-  const { setFavoriteArticle, setUnfavoriteArticle, onDelete, isFavorite, item } = useLikes(receivedArticle);
+  const { isLikeRequestSending, setFavoriteArticle, setUnfavoriteArticle, onDelete, isFavorite, item } = useLikes(
+    receivedArticle
+  );
   if (item) {
     return (
       <Article
@@ -14,6 +16,7 @@ const ArticleWrapper = ({ article: receivedArticle, isFull }) => {
         onLike={setFavoriteArticle}
         onDislike={setUnfavoriteArticle}
         onDelete={onDelete}
+        isLikeRequestSending={isLikeRequestSending}
       />
     );
   }

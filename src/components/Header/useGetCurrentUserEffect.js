@@ -1,9 +1,10 @@
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
+import { useDispatch } from 'react-redux';
 import { setUser } from '../../actions/actions';
-import useBaseHooks from '../../hooks/useBaseHooks';
 
 const useGetCurrentUserEffect = (userService) => {
-  const { setErrors, dispatch } = useBaseHooks();
+  const dispatch = useDispatch();
+  const [errors, setErrors] = useState(null);
   const token = localStorage.getItem('token');
   useEffect(() => {
     if (token) {
@@ -14,7 +15,7 @@ const useGetCurrentUserEffect = (userService) => {
         })
         .catch(() => setErrors(true));
     }
-  }, [token, dispatch, userService, setErrors]);
+  }, [token, dispatch, userService, setErrors, errors]);
 };
 
 export default useGetCurrentUserEffect;

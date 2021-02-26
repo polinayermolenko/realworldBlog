@@ -1,11 +1,11 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
+import { useSelector } from 'react-redux';
 import classes from '../Header/Header.module.scss';
 import DefaultUserAvatar from '../../img/DefaultUserAvatar.svg';
-import useBaseHooks from '../../hooks/useBaseHooks';
 
 const UserInfo = () => {
-  const { currentUser } = useBaseHooks();
+  const currentUser = useSelector(({ userData: { user = {} } }) => user);
 
   return (
     <Link className={classes.Header__UserInfo} to="/profile">

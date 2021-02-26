@@ -1,13 +1,18 @@
-import React from 'react';
+import React, { useMemo, useState } from 'react';
+import { useHistory } from 'react-router-dom';
+import ArticlesService from '../../services/ArticlesService';
+import ErrorIndicator from '../ErrorIndicator/ErrorIndicator';
 import NewArticleForm from '../NewArticleForm/NewArticleForm';
 import TagForm from '../TagForm/TagForm';
 import TagList from '../TagList/TagList';
 import { addTag, deleteTag } from '../../utils/addTagDeleteTag';
-import useBaseHooks from '../../hooks/useBaseHooks';
 import classes from './NewArticle.module.scss';
 
 const NewArticle = () => {
-  const { tags, setTags, articlesService, history, setErrors } = useBaseHooks();
+  const [tags, setTags] = useState([]);
+  const [error, setErrors] = useState(null);
+  const articlesService = useMemo(() => new ArticlesService(), []);
+  const history = useHistory();
 
   const submitArticle = ({ title, description, body }) => {
     const tagList = tags.map((tag) => tag.name);
@@ -25,6 +30,10 @@ const NewArticle = () => {
       .then(({ article: { slug } }) => history.push(`/articles/${slug}`))
       .catch(() => setErrors(true));
   };
+
+  if (error) {
+    return <ErrorIndicator />;
+  }
 
   return (
     <div className={classes.NewArticle}>

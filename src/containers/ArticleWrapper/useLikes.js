@@ -1,11 +1,12 @@
 import { useState } from 'react';
-import useBaseHooks from '../../hooks/useBaseHooks';
+import { useHistory } from 'react-router-dom';
 import ArticlesService from '../../services/ArticlesService';
 
 const useLikes = (receivedArticle) => {
   const articlesService = new ArticlesService();
   const { slug } = receivedArticle;
-  const { setErrors, history } = useBaseHooks();
+  const history = useHistory();
+  const [errors, setErrors] = useState(null);
   const [isFavorite, setFavorite] = useState(localStorage.getItem(slug));
   const [item, setArticle] = useState(receivedArticle);
   const [isLikeRequestSending, setLikeRequest] = useState(false);
@@ -53,7 +54,7 @@ const useLikes = (receivedArticle) => {
       .catch(() => setErrors(true));
   };
 
-  return { isLikeRequestSending, setFavoriteArticle, setUnfavoriteArticle, onDelete, isFavorite, item };
+  return { isLikeRequestSending, errors, setFavoriteArticle, setUnfavoriteArticle, onDelete, isFavorite, item };
 };
 
 export default useLikes;

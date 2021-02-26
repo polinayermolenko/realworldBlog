@@ -1,19 +1,20 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Link, Redirect } from 'react-router-dom';
 import { Button } from 'antd';
+import { useDispatch, useSelector } from 'react-redux';
 import FormInput from '../FormInput/FormInput';
 import { setLoggedIn, setUser } from '../../actions/actions';
-// import ArticlesService from '../../services/ArticlesService';
+import UserService from '../../services/UserService';
 import ErrorIndicator from '../ErrorIndicator/ErrorIndicator';
 import useValidation from '../../hooks/useValidation';
-import useBaseHooks from '../../hooks/useBaseHooks';
 import classes from './SignIn.module.scss';
-import UserService from '../../services/UserService';
 
 const SignIn = () => {
-  // const articlesService = new ArticlesService();
   const userService = new UserService();
-  const { dispatch, auth, setErrors } = useBaseHooks();
+  const dispatch = useDispatch();
+  const auth = useSelector(({ loggedIn = false }) => loggedIn);
+  const [error, setErrors] = useState(null);
+
   const {
     handleSubmit,
     errors,
@@ -41,8 +42,12 @@ const SignIn = () => {
         localStorage.setItem('token', body.user.token);
         dispatch(setUser(body.user));
       })
-      .catch(() => setErrors(true));
+      .catch((err) => setErrors(err));
   };
+
+  if (error) {
+    return <ErrorIndicator />;
+  }
 
   if (auth) {
     return <Redirect to="/" />;

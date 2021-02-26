@@ -1,12 +1,15 @@
-import { useEffect, useState } from 'react';
-import useBaseHooks from './useBaseHooks';
+import { useEffect, useMemo, useState } from 'react';
+import { useHistory, useParams } from 'react-router-dom';
+import ArticlesService from '../services/ArticlesService';
 
 const useGetArticleEffect = () => {
   const [item, setArticle] = useState(null);
   const [hasError, setError] = useState(false);
   const [isLoading, setLoading] = useState(true);
+  const history = useHistory();
+  const { slug } = useParams();
   const [tags, setTags] = useState([]);
-  const { history, slug, articlesService } = useBaseHooks();
+  const articlesService = useMemo(() => new ArticlesService(), []);
 
   useEffect(() => {
     articlesService

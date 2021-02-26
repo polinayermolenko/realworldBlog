@@ -1,15 +1,21 @@
-import React from 'react';
+import React, { useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { useHistory } from 'react-router-dom';
 import { Button } from 'antd';
 import { setUser } from '../../actions/actions';
 import FormInput from '../FormInput/FormInput';
 import useValidation from '../../hooks/useValidation';
-import useBaseHooks from '../../hooks/useBaseHooks';
 import useDefaultValuesEffect from './useDefaultValuesEffect';
-import classes from './EditProfile.module.scss';
 import UserService from '../../services/UserService';
+import ErrorIndicator from '../ErrorIndicator/ErrorIndicator';
+import classes from './EditProfile.module.scss';
 
 const EditProfile = () => {
-  const { dispatch, history, currentUser, setErrors } = useBaseHooks();
+  const dispatch = useDispatch();
+  const history = useHistory();
+  const currentUser = useSelector(({ userData: { user = {} } }) => user);
+  const [error, setErrors] = useState(null);
+
   const {
     usernameSettingsValidation,
     emailSettingsValidation,
@@ -38,8 +44,12 @@ const EditProfile = () => {
         dispatch(setUser(body.user));
         history.push('/');
       })
-      .catch(() => setErrors(true));
+      .catch((err) => setErrors(err));
   };
+
+  if (error) {
+    return <ErrorIndicator />;
+  }
 
   return (
     <div className={classes.Profile}>

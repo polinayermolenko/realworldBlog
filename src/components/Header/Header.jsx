@@ -1,15 +1,15 @@
 import React, { useMemo } from 'react';
 import { Link } from 'react-router-dom';
-import useBaseHooks from '../../hooks/useBaseHooks';
+import { useSelector } from 'react-redux';
+import UserService from '../../services/UserService';
 import LoggedInUser from '../LoggedInUser/LoggedInUser';
 import LoggedOutUser from '../LoggedOutUser/LoggedOutUser';
 import useGetCurrentUserEffect from './useGetCurrentUserEffect';
 import classes from './Header.module.scss';
-import UserService from '../../services/UserService';
 
 const Header = () => {
   const userService = useMemo(() => new UserService(), []);
-  const { auth } = useBaseHooks();
+  const auth = useSelector(({ loggedIn = false }) => loggedIn);
   useGetCurrentUserEffect(userService);
 
   return (

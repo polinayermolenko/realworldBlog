@@ -1,15 +1,16 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import ReactMarkdown from 'react-markdown';
-import { Link } from 'react-router-dom';
+import { Link, useHistory } from 'react-router-dom';
+import { useSelector } from 'react-redux';
 import { Button, Popconfirm } from 'antd';
 import { format, parseISO } from 'date-fns';
 import { HeartOutlined, HeartFilled, LoadingOutlined } from '@ant-design/icons';
-import useBaseHooks from '../../hooks/useBaseHooks';
 import classes from './Article.module.scss';
 
 const Article = ({ article, isFull = false, isLikeRequestSending, onLike, onDislike, onDelete, isFavorite }) => {
-  const { history, username } = useBaseHooks();
+  const history = useHistory();
+  const username = useSelector(({ userData: { user = {} } }) => user.username);
 
   if (article) {
     const { title, slug, body, createdAt, tagList, description, author, favoritesCount } = article;

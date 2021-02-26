@@ -1,16 +1,20 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Link, Redirect } from 'react-router-dom';
+import { useDispatch, useSelector } from 'react-redux';
 import { Button } from 'antd';
 import FormInput from '../FormInput/FormInput';
 import { setLoggedIn, setUser } from '../../actions/actions';
 import useValidation from '../../hooks/useValidation';
-import useBaseHooks from '../../hooks/useBaseHooks';
-import classes from './SignUp.module.scss';
 import UserService from '../../services/UserService';
+import ErrorIndicator from '../ErrorIndicator/ErrorIndicator';
+import classes from './SignUp.module.scss';
 
 const SignUp = () => {
   const userService = new UserService();
-  const { dispatch, auth, setErrors } = useBaseHooks();
+  const dispatch = useDispatch();
+  const auth = useSelector(({ loggedIn = false }) => loggedIn);
+  const [error, setErrors] = useState(null);
+
   const {
     handleSubmit,
     errors,
@@ -48,6 +52,10 @@ const SignUp = () => {
 
   if (auth) {
     return <Redirect to="/" />;
+  }
+
+  if (error) {
+    return <ErrorIndicator />;
   }
 
   return (

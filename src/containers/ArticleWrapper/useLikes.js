@@ -1,26 +1,27 @@
 import { useState } from 'react';
 import { useHistory } from 'react-router-dom';
 import ArticlesService from '../../services/ArticlesService';
+import { getFromLStorage, removeFromLStorage, setToLStorage } from '../../utils/localStorage';
 
 const useLikes = (receivedArticle) => {
   const articlesService = new ArticlesService();
   const { slug } = receivedArticle;
   const history = useHistory();
   const [errors, setErrors] = useState(null);
-  const [isFavorite, setFavorite] = useState(localStorage.getItem(slug));
+  const [isFavorite, setFavorite] = useState(getFromLStorage(slug));
   const [item, setArticle] = useState(receivedArticle);
   const [isLikeRequestSending, setLikeRequest] = useState(false);
 
   const setFavoriteArticle = () => {
-    if (localStorage.getItem('token')) {
+    if (getFromLStorage('token')) {
       setLikeRequest(true);
       articlesService
         .setFavoriteArticle(slug)
         .then(({ article }) => {
           setLikeRequest(false);
           setArticle(article);
-          localStorage.setItem(slug, article.favorited);
-          setFavorite(localStorage.getItem(slug));
+          setToLStorage(slug, article.favorited);
+          setFavorite(getFromLStorage(slug));
         })
         .catch(() => {
           setLikeRequest(false);
@@ -38,8 +39,8 @@ const useLikes = (receivedArticle) => {
       .then(({ article }) => {
         setLikeRequest(false);
         setArticle(article);
-        localStorage.removeItem(slug);
-        setFavorite(localStorage.getItem(slug));
+        removeFromLStorage(slug);
+        setFavorite(setToLStorage(slug));
       })
       .catch(() => {
         setLikeRequest(false);

@@ -5,6 +5,7 @@ import UserService from '../../services/UserService';
 import LoggedInUser from '../LoggedInUser/LoggedInUser';
 import LoggedOutUser from '../LoggedOutUser/LoggedOutUser';
 import useGetCurrentUserEffect from './useGetCurrentUserEffect';
+import { getFromLStorage } from '../../utils/localStorage';
 import classes from './Header.module.scss';
 
 const Header = () => {
@@ -19,7 +20,7 @@ const Header = () => {
           Realword Blog
         </Link>
       </h1>
-      {auth || localStorage.getItem('token') ? <LoggedInUser /> : <LoggedOutUser />}
+      {auth || getFromLStorage('token') ? <LoggedInUser /> : <LoggedOutUser />}
     </header>
   );
 };

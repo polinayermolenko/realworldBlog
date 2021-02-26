@@ -1,11 +1,12 @@
 import { useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { setUser } from '../../actions/actions';
+import { getFromLStorage } from '../../utils/localStorage';
 
 const useGetCurrentUserEffect = (userService) => {
   const dispatch = useDispatch();
   const [errors, setErrors] = useState(null);
-  const token = localStorage.getItem('token');
+  const token = getFromLStorage('token');
   useEffect(() => {
     if (token) {
       userService

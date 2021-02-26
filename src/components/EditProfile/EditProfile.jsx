@@ -4,7 +4,7 @@ import { useHistory } from 'react-router-dom';
 import { Button } from 'antd';
 import { setUser } from '../../actions/actions';
 import FormInput from '../FormInput/FormInput';
-import useValidation from '../../hooks/useValidation';
+import useFormRegister from '../../hooks/useFormRegister';
 import useDefaultValuesEffect from './useDefaultValuesEffect';
 import UserService from '../../services/UserService';
 import ErrorIndicator from '../ErrorIndicator/ErrorIndicator';
@@ -26,7 +26,7 @@ const EditProfile = () => {
     serverErrors,
     errors,
     setServerErrors,
-  } = useValidation();
+  } = useFormRegister();
   const userService = new UserService();
   useDefaultValuesEffect(currentUser, setValue);
 

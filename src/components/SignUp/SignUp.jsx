@@ -4,10 +4,11 @@ import { useDispatch, useSelector } from 'react-redux';
 import { Button } from 'antd';
 import FormInput from '../FormInput/FormInput';
 import { setLoggedIn, setUser } from '../../actions/actions';
-import useValidation from '../../hooks/useValidation';
+import useFormRegister from '../../hooks/useFormRegister';
 import UserService from '../../services/UserService';
 import ErrorIndicator from '../ErrorIndicator/ErrorIndicator';
 import classes from './SignUp.module.scss';
+import { setToLStorage } from '../../utils/localStorage';
 
 const SignUp = () => {
   const userService = new UserService();
@@ -25,7 +26,7 @@ const SignUp = () => {
     passwordSettingsValidation,
     passwordRepeatSettingsValidation,
     agreementSettingsValidation,
-  } = useValidation();
+  } = useFormRegister();
 
   const onSubmit = ({ username, email, password }) => {
     const requestBody = {
@@ -43,7 +44,7 @@ const SignUp = () => {
           setServerErrors(body.errors);
           return;
         }
-        localStorage.setItem('token', body.user.token);
+        setToLStorage('token', body.user.token);
         dispatch(setUser(body.user));
         dispatch(setLoggedIn(true));
       })

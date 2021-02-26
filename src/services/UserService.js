@@ -1,3 +1,4 @@
+import { getFromLStorage } from '../utils/localStorage';
 import GetResponseService from './GetResponseService';
 
 export default class UserService extends GetResponseService {
@@ -32,7 +33,7 @@ export default class UserService extends GetResponseService {
       method: 'GET',
       headers: {
         'Content-Type': 'application/json;charset=utf-8',
-        Authorization: `Token ${localStorage.getItem('token')}`,
+        Authorization: `Token ${getFromLStorage('token')}`,
       },
     };
     const res = await this.getResponse(`${this.baseUrl}user`, options);
@@ -44,7 +45,7 @@ export default class UserService extends GetResponseService {
       method: 'PUT',
       headers: {
         'Content-Type': 'application/json;charset=utf-8',
-        Authorization: `Token ${localStorage.getItem('token')}`,
+        Authorization: `Token ${getFromLStorage('token')}`,
       },
       body: JSON.stringify(data),
     };

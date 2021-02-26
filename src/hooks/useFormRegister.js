@@ -3,7 +3,7 @@ import { useForm } from 'react-hook-form';
 import isEmail from 'validator/es/lib/isEmail';
 import isURL from 'validator/es/lib/isURL';
 
-const useValidation = () => {
+const useFormRegister = () => {
   const [serverErrors, setServerErrors] = useState({
     username: null,
     email: null,
@@ -68,4 +68,4 @@ const useValidation = () => {
   };
 };
 
-export default useValidation;
+export default useFormRegister;

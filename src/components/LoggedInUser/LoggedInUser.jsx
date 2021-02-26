@@ -4,6 +4,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { Spin } from 'antd';
 import UserInfo from '../UserInfo/UserInfo';
 import { setUser } from '../../actions/actions';
+import { removeFromLStorage } from '../../utils/localStorage';
 import classes from '../Header/Header.module.scss';
 
 const LoggedInUser = () => {
@@ -24,7 +25,7 @@ const LoggedInUser = () => {
           history.go(0);
           history.push('/');
           dispatch(setUser({}));
-          localStorage.removeItem('token');
+          removeFromLStorage('token');
         }}
       >
         Log Out

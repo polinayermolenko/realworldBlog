@@ -6,8 +6,9 @@ import FormInput from '../FormInput/FormInput';
 import { setLoggedIn, setUser } from '../../actions/actions';
 import UserService from '../../services/UserService';
 import ErrorIndicator from '../ErrorIndicator/ErrorIndicator';
-import useValidation from '../../hooks/useValidation';
+import useFormRegister from '../../hooks/useFormRegister';
 import classes from './SignIn.module.scss';
+import { setToLStorage } from '../../utils/localStorage';
 
 const SignIn = () => {
   const userService = new UserService();
@@ -22,7 +23,7 @@ const SignIn = () => {
     passwordSettingsValidation,
     serverErrors,
     setServerErrors,
-  } = useValidation();
+  } = useFormRegister();
 
   const onSubmit = ({ email, password }) => {
     const requestBody = {
@@ -39,7 +40,7 @@ const SignIn = () => {
           return;
         }
         dispatch(setLoggedIn(true));
-        localStorage.setItem('token', body.user.token);
+        setToLStorage('token', body.user.token);
         dispatch(setUser(body.user));
       })
       .catch((err) => setErrors(err));

@@ -1,9 +1,10 @@
+import { getFromLStorage } from '../utils/localStorage';
 import GetResponseService from './GetResponseService';
 
 export default class ArticlesService extends GetResponseService {
   baseUrl = `https://conduit.productionready.io/api/articles`;
 
-  token = `Token ${localStorage.getItem('token')}`;
+  token = `Token ${getFromLStorage('token')}`;
 
   async getArticles(pages = 1) {
     const res = await this.getResponse(`${this.baseUrl}?offset=${pages * 20 - 20}`);

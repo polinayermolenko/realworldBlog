@@ -101,7 +101,7 @@ Article.defaultProps = {
   onLike: () => {},
   onDislike: () => {},
   onDelete: () => {},
-  isFavorite: '',
+  isFavorite: false,
   isLikeRequestSending: false,
 };
 
@@ -111,6 +111,6 @@ Article.propTypes = {
   onLike: PropTypes.func,
   onDelete: PropTypes.func,
   onDislike: PropTypes.func,
-  isFavorite: PropTypes.string,
+  isFavorite: PropTypes.bool,
   isLikeRequestSending: PropTypes.bool,
 };

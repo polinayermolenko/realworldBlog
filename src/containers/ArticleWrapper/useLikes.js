@@ -40,7 +40,7 @@ const useLikes = (receivedArticle) => {
         setLikeRequest(false);
         setArticle(article);
         removeFromLStorage(slug);
-        setFavorite(setToLStorage(slug));
+        setFavorite(getFromLStorage(slug));
       })
       .catch(() => {
         setLikeRequest(false);

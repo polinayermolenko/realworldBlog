@@ -5,13 +5,13 @@ import TagForm from '../../components/TagForm/TagForm';
 import NewArticleForm from '../../components/NewArticleForm/NewArticleForm';
 import TagList from '../../components/TagList/TagList';
 import { addTag, deleteTag } from '../../utils/addTagDeleteTag';
-import useGetArticleEffect from '../../hooks/useGetArticleEffect';
+import useEditArticleEffect from './useEditArticleEffect';
 import classes from '../../components/NewArticle/NewArticle.module.scss';
 import cls from './EditArticle.module.scss';
 
 const EditArticle = () => {
   const articlesService = useMemo(() => new ArticlesService(), []);
-  const { slug, history, item, hasError, isLoading, tags, setTags, setError } = useGetArticleEffect();
+  const { slug, history, item, hasError, isLoading, tags, setTags, setError } = useEditArticleEffect();
 
   const submitArticle = ({ title, description, body }) => {
     const tagList = tags.map((tag) => tag.name);

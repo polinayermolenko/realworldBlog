@@ -6,13 +6,47 @@ export default class ArticlesService extends GetResponseService {
 
   token = `Token ${getFromLStorage('token')}`;
 
-  async getArticles(pages = 1) {
-    const res = await this.getResponse(`${this.baseUrl}?offset=${pages * 20 - 20}`);
+  async getArticles(pages = 1, token = '') {
+    let options = {};
+    if (token) {
+      options = {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json;charset=utf-8',
+          Authorization: `Token ${token}`,
+        },
+      };
+    } else {
+      options = {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json;charset=utf-8',
+        },
+      };
+    }
+    const res = await this.getResponse(`${this.baseUrl}?offset=${pages * 20 - 20}`, options);
     return res;
   }
 
-  async getArticle(slug) {
-    const res = await this.getResponse(`${this.baseUrl}/${slug}`);
+  async getArticle(slug, token = '') {
+    let options = {};
+    if (token) {
+      options = {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json;charset=utf-8',
+          Authorization: `Token ${token}`,
+        },
+      };
+    } else {
+      options = {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json;charset=utf-8',
+        },
+      };
+    }
+    const res = await this.getResponse(`${this.baseUrl}/${slug}`, options);
     return res;
   }
 
@@ -54,27 +88,40 @@ export default class ArticlesService extends GetResponseService {
     return res;
   }
 
-  async setFavoriteArticle(slug) {
+  async favoriteArticle(slug, token, favorite) {
+    const actionMethod = favorite ? 'DELETE' : 'POST';
     const options = {
-      method: 'POST',
+      method: actionMethod,
       headers: {
-        'Content-Type': 'application/json;charset=utf-8',
-        Authorization: this.token,
+        'Content-Type': `application/json;charset=utf-8`,
+        Authorization: `Token ${token}`,
       },
     };
     const res = await this.getResponse(`${this.baseUrl}/${slug}/favorite`, options);
     return res;
   }
 
-  async setUnfavoriteArticle(slug) {
-    const options = {
-      method: 'DELETE',
-      headers: {
-        'Content-Type': 'application/json;charset=utf-8',
-        Authorization: this.token,
-      },
-    };
-    const res = await this.getResponse(`${this.baseUrl}/${slug}/favorite`, options);
-    return res;
-  }
+  // async setFavoriteArticle(slug) {
+  //   const options = {
+  //     method: 'POST',
+  //     headers: {
+  //       'Content-Type': 'application/json;charset=utf-8',
+  //       Authorization: this.token,
+  //     },
+  //   };
+  //   const res = await this.getResponse(`${this.baseUrl}/${slug}/favorite`, options);
+  //   return res;
+  // }
+
+  // async setUnfavoriteArticle(slug) {
+  //   const options = {
+  //     method: 'DELETE',
+  //     headers: {
+  //       'Content-Type': 'application/json;charset=utf-8',
+  //       Authorization: this.token,
+  //     },
+  //   };
+  //   const res = await this.getResponse(`${this.baseUrl}/${slug}/favorite`, options);
+  //   return res;
+  // }
 }

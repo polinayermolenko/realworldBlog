@@ -1,12 +1,15 @@
 import React from 'react';
 import { Alert, Spin } from 'antd';
-import ArticleWrapper from '../ArticleWrapper/ArticleWrapper';
-import useGetArticleEffect from '../../hooks/useGetArticleEffect';
 import classes from './ArticlePage.module.scss';
+import Article from '../../components/Article/Article';
+import ErrorIndicator from '../../components/ErrorIndicator/ErrorIndicator';
+import useGetArticleEffect from './useGetArticleEffect';
 
 const ArticlePage = () => {
-  const { item, hasError, isLoading } = useGetArticleEffect();
-
+  const { hasError, isLoading, errors, item, onDelete } = useGetArticleEffect();
+  if (errors) {
+    return <ErrorIndicator />;
+  }
   if (hasError) {
     return <Alert message="Error" description="Couldn't find the article" type="error" showIcon />;
   }
@@ -16,7 +19,7 @@ const ArticlePage = () => {
   }
 
   if (item) {
-    return <ArticleWrapper article={item} isFull />;
+    return <Article article={item} isFull onDelete={onDelete} />;
   }
 
   return null;

@@ -1,21 +1,12 @@
-import React, { useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-import { useHistory } from 'react-router-dom';
+import React from 'react';
 import { Button } from 'antd';
-import { setUser } from '../../actions/actions';
 import FormInput from '../FormInput/FormInput';
 import useFormRegister from '../../hooks/useFormRegister';
-import useDefaultValuesEffect from './useDefaultValuesEffect';
-import UserService from '../../services/UserService';
+import useEditProfile from './useEditProfile';
 import ErrorIndicator from '../ErrorIndicator/ErrorIndicator';
 import classes from './EditProfile.module.scss';
 
 const EditProfile = () => {
-  const dispatch = useDispatch();
-  const history = useHistory();
-  const currentUser = useSelector(({ userData: { user = {} } }) => user);
-  const [error, setErrors] = useState(null);
-
   const {
     usernameSettingsValidation,
     emailSettingsValidation,
@@ -27,25 +18,8 @@ const EditProfile = () => {
     errors,
     setServerErrors,
   } = useFormRegister();
-  const userService = new UserService();
-  useDefaultValuesEffect(currentUser, setValue);
 
-  const onSubmit = ({ username, email, password, image }) => {
-    const requestBody = {
-      user: { username, email, password, image },
-    };
-    userService
-      .updateUser(requestBody)
-      .then((body) => {
-        if (body.errors) {
-          setServerErrors(body.errors);
-          return;
-        }
-        dispatch(setUser(body.user));
-        history.push('/');
-      })
-      .catch((err) => setErrors(err));
-  };
+  const { onSubmit, error } = useEditProfile(setValue, setServerErrors);
 
   if (error) {
     return <ErrorIndicator />;

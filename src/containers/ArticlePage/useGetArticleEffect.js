@@ -27,7 +27,7 @@ const useGetArticleEffect = () => {
 
   const onDelete = () => {
     articlesService
-      .deleteArticle(slug)
+      .deleteArticle(slug, token)
       .then(() => history.push('/'))
       .catch(() => setErrors(true));
   };

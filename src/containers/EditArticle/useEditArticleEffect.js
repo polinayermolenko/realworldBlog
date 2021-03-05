@@ -28,7 +28,25 @@ const useEditArticleEffect = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [slug]);
 
-  return { item, hasError, isLoading, tags, history, setTags, articlesService, slug, setError };
+  const submitArticle = ({ title, description, body }) => {
+    const tagList = tags.map((tag) => tag.name);
+    const requestBody = {
+      article: {
+        title,
+        description,
+        body,
+        tagList,
+      },
+    };
+    articlesService
+      .updateArticle(requestBody, slug, token)
+      .then(({ article }) => {
+        history.push(`/articles/${article.slug}`);
+      })
+      .catch(() => setError(true));
+  };
+
+  return { item, hasError, isLoading, tags, setTags, articlesService, setError, submitArticle };
 };
 
 export default useEditArticleEffect;

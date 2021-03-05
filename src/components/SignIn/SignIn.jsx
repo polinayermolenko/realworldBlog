@@ -1,21 +1,13 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { Link, Redirect } from 'react-router-dom';
 import { Button } from 'antd';
-import { useDispatch, useSelector } from 'react-redux';
 import FormInput from '../FormInput/FormInput';
-import { setLoggedIn, setUser } from '../../actions/actions';
-import UserService from '../../services/UserService';
 import ErrorIndicator from '../ErrorIndicator/ErrorIndicator';
 import useFormRegister from '../../hooks/useFormRegister';
+import useLogInUser from './useLogInUser';
 import classes from './SignIn.module.scss';
-import { setToLStorage } from '../../utils/localStorage';
 
 const SignIn = () => {
-  const userService = new UserService();
-  const dispatch = useDispatch();
-  const auth = useSelector(({ loggedIn = false }) => loggedIn);
-  const [error, setErrors] = useState(null);
-
   const {
     handleSubmit,
     errors,
@@ -25,26 +17,7 @@ const SignIn = () => {
     setServerErrors,
   } = useFormRegister();
 
-  const onSubmit = ({ email, password }) => {
-    const requestBody = {
-      user: {
-        email,
-        password,
-      },
-    };
-    userService
-      .logInUser(requestBody)
-      .then((body) => {
-        if (body.errors) {
-          setServerErrors(body.errors);
-          return;
-        }
-        dispatch(setLoggedIn(true));
-        setToLStorage('token', body.user.token);
-        dispatch(setUser(body.user));
-      })
-      .catch((err) => setErrors(err));
-  };
+  const { onSubmit, auth, error } = useLogInUser(setServerErrors);
 
   if (error) {
     return <ErrorIndicator />;

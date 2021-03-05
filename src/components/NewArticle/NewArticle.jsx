@@ -1,35 +1,14 @@
-import React, { useMemo, useState } from 'react';
-import { useHistory } from 'react-router-dom';
-import ArticlesService from '../../services/ArticlesService';
+import React from 'react';
 import ErrorIndicator from '../ErrorIndicator/ErrorIndicator';
 import NewArticleForm from '../NewArticleForm/NewArticleForm';
 import TagForm from '../TagForm/TagForm';
 import TagList from '../TagList/TagList';
 import { addTag, deleteTag } from '../../utils/addTagDeleteTag';
 import classes from './NewArticle.module.scss';
+import useCreateNewArticle from './useCreateNewArticle';
 
 const NewArticle = () => {
-  const [tags, setTags] = useState([]);
-  const [error, setErrors] = useState(null);
-  const articlesService = useMemo(() => new ArticlesService(), []);
-  const history = useHistory();
-
-  const submitArticle = ({ title, description, body }) => {
-    const tagList = tags.map((tag) => tag.name);
-    const requestBody = {
-      article: {
-        title,
-        description,
-        body,
-        tagList,
-      },
-    };
-
-    articlesService
-      .createArticle(requestBody)
-      .then(({ article: { slug } }) => history.push(`/articles/${slug}`))
-      .catch(() => setErrors(true));
-  };
+  const { setTags, tags, submitArticle, error } = useCreateNewArticle();
 
   if (error) {
     return <ErrorIndicator />;

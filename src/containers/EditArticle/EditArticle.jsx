@@ -1,6 +1,5 @@
+import React from 'react';
 import { Alert, Spin } from 'antd';
-import React, { useMemo } from 'react';
-import ArticlesService from '../../services/ArticlesService';
 import TagForm from '../../components/TagForm/TagForm';
 import NewArticleForm from '../../components/NewArticleForm/NewArticleForm';
 import TagList from '../../components/TagList/TagList';
@@ -10,26 +9,7 @@ import classes from '../../components/NewArticle/NewArticle.module.scss';
 import cls from './EditArticle.module.scss';
 
 const EditArticle = () => {
-  const articlesService = useMemo(() => new ArticlesService(), []);
-  const { slug, history, item, hasError, isLoading, tags, setTags, setError } = useEditArticleEffect();
-
-  const submitArticle = ({ title, description, body }) => {
-    const tagList = tags.map((tag) => tag.name);
-    const requestBody = {
-      article: {
-        title,
-        description,
-        body,
-        tagList,
-      },
-    };
-    articlesService
-      .updateArticle(requestBody, slug)
-      .then(({ article }) => {
-        history.push(`/articles/${article.slug}`);
-      })
-      .catch(() => setError(true));
-  };
+  const { item, hasError, isLoading, tags, setTags, submitArticle } = useEditArticleEffect();
 
   if (hasError) {
     return <Alert message="Error" description="Couldn't find the article" type="error" showIcon />;

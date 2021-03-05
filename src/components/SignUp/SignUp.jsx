@@ -1,21 +1,13 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { Link, Redirect } from 'react-router-dom';
-import { useDispatch, useSelector } from 'react-redux';
 import { Button } from 'antd';
 import FormInput from '../FormInput/FormInput';
-import { setLoggedIn, setUser } from '../../actions/actions';
 import useFormRegister from '../../hooks/useFormRegister';
-import UserService from '../../services/UserService';
 import ErrorIndicator from '../ErrorIndicator/ErrorIndicator';
 import classes from './SignUp.module.scss';
-import { setToLStorage } from '../../utils/localStorage';
+import useSingUp from './useSignUp';
 
 const SignUp = () => {
-  const userService = new UserService();
-  const dispatch = useDispatch();
-  const auth = useSelector(({ loggedIn = false }) => loggedIn);
-  const [error, setErrors] = useState(null);
-
   const {
     handleSubmit,
     errors,
@@ -28,28 +20,7 @@ const SignUp = () => {
     agreementSettingsValidation,
   } = useFormRegister();
 
-  const onSubmit = ({ username, email, password }) => {
-    const requestBody = {
-      user: {
-        username,
-        email,
-        password,
-      },
-    };
-
-    userService
-      .registerUser(requestBody)
-      .then((body) => {
-        if (body.errors) {
-          setServerErrors(body.errors);
-          return;
-        }
-        setToLStorage('token', body.user.token);
-        dispatch(setUser(body.user));
-        dispatch(setLoggedIn(true));
-      })
-      .catch(() => setErrors(true));
-  };
+  const { auth, error, onSubmit } = useSingUp(setServerErrors);
 
   if (auth) {
     return <Redirect to="/" />;

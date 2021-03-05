@@ -1,47 +1,17 @@
-import React, { useEffect, useMemo, useState } from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
 import ReactMarkdown from 'react-markdown';
-import { Link, useHistory } from 'react-router-dom';
-import { useSelector } from 'react-redux';
+import { Link } from 'react-router-dom';
 import { Button, Popconfirm } from 'antd';
 import { format, parseISO } from 'date-fns';
 import { HeartOutlined, HeartFilled, LoadingOutlined } from '@ant-design/icons';
 import classes from './Article.module.scss';
-import ArticlesService from '../../services/ArticlesService';
 import ErrorIndicator from '../ErrorIndicator/ErrorIndicator';
+import useArticle from './useArticle';
 
 const Article = ({ article, isFull = false, onDelete }) => {
-  const [item, setArticle] = useState(article);
-  const articlesService = useMemo(() => new ArticlesService(), []);
-  const [isLikeRequestSending, setLikeRequest] = useState(false);
-  const history = useHistory();
-  const [errors, setErrors] = useState(null);
-  const username = useSelector(({ userData: { user = {} } }) => user.username);
-  const token = useSelector(({ userData: { user = {} } }) => user.token);
-
-  useEffect(() => {
-    setArticle(article);
-  }, [article]);
-
+  const { onFavoriteArticle, item, username, errors, isLikeRequestSending, onButtonEditClick } = useArticle(article);
   const { title, slug, favorited, body, createdAt, tagList, description, author, favoritesCount } = item;
-
-  const onFavoriteArticle = () => {
-    if (token) {
-      setLikeRequest(true);
-      articlesService
-        .favoriteArticle(slug, token, favorited)
-        .then((result) => {
-          setLikeRequest(false);
-          setArticle(result.article);
-        })
-        .catch(() => {
-          setLikeRequest(false);
-          setErrors(true);
-        });
-    } else {
-      history.push('/sign-in');
-    }
-  };
 
   if (errors) {
     return <ErrorIndicator />;
@@ -107,11 +77,7 @@ const Article = ({ article, isFull = false, onDelete }) => {
                   Delete
                 </Button>
               </Popconfirm>
-              <Button
-                className={classes.Article__Edit}
-                type="primary"
-                onClick={() => history.push(`/articles/${slug}/edit`)}
-              >
+              <Button className={classes.Article__Edit} type="primary" onClick={onButtonEditClick}>
                 Edit
               </Button>
             </div>
